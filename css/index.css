@@ -632,13 +632,17 @@ p {
     .mobile-next-btn,
     .mobile-prev-btn {
         position: absolute;
-        bottom: 1.2rem;
+        bottom: 3rem;
         cursor: pointer;
         color: var(--second-text-color);
         font-size: 1.4rem;
         padding: 0.5rem;
         transform: translateY(50%);
         right: 1.5rem;
+        z-index: 50000;
+    }
+    
+    .mobile-next-btn {
         left: 1.5rem;
     }
 
