@@ -1,274 +1,311 @@
-const inputElem = document.getElementById('terminalInput');
-const outputArea = document.getElementById('outputArea');
-const termBody = document.getElementById('terminalBody');
+(function(){
+  const bootBar = document.getElementById('bootBar');
+  const bootScreen = document.getElementById('boot-screen');
+  let prog = 0;
+  const bootInterval = setInterval(() => {
+    prog += Math.random() * 18 + 8;
+    if (prog >= 100) { prog = 100; clearInterval(bootInterval); finishBoot(); }
+    bootBar.style.width = prog + '%';
+    bootScreen.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', Math.round(prog));
+  }, 80);
 
-let cmdHistory = [], historyIndex = 0, isTyping = false;
+  function finishBoot() {
+    setTimeout(() => {
+      bootScreen.classList.add('fade-out');
+      setTimeout(() => { bootScreen.style.display = 'none'; openWin('about'); }, 650);
+    }, 300);
+  }
 
-function esc(s) {
-    return String(s).replace(/[&<>"']/g, m =>
-        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-}
+  const winstates = {};
+  let zTop = 200;
+  const WIN_IDS = ['about','skills','projects','experience','contact','terminal'];
+  const WIN_LABELS = { about:'👤 about', skills:'⚡ skills', projects:'📂 projects', experience:'📋 exp', contact:'📬 contact', terminal:'🖥 term' };
 
-function typewrite(el, html, charDelay = 6) {
-    return new Promise(resolve => {
-        const tokens = [];
-        let i = 0;
-        while (i < html.length) {
-            if (html[i] === '<') {
-                let tag = '';
-                while (i < html.length && html[i] !== '>') tag += html[i++];
-                tag += '>'; i++;
-                tokens.push({ t: 'tag', v: tag });
-            } else {
-                let txt = '';
-                while (i < html.length && html[i] !== '<') txt += html[i++];
-                for (const c of txt) tokens.push({ t: 'char', v: c });
-            }
-        }
-        el.innerHTML = '';
-        let idx = 0;
-        function next() {
-            if (idx >= tokens.length) { isTyping = false; resolve(); return; }
-            const tok = tokens[idx++];
-            if (tok.t === 'tag') {
-                el.innerHTML += tok.v;
-                requestAnimationFrame(next);
-            } else {
-                const isVisible = tok.v.trim().length > 0;
-                el.innerHTML += tok.v === ' ' ? ' ' : (tok.v === '\n' ? '<br>' : esc(tok.v));
-                termBody.scrollTop = termBody.scrollHeight;
-                if (isVisible) setTimeout(next, charDelay + Math.random() * 4);
-                else requestAnimationFrame(next);
-            }
-        }
-        isTyping = true;
-        next();
-    });
-}
-
-async function appendOutput(html, opts = {}) {
-    const { isError = false, instant = false } = opts;
-    const div = document.createElement('div');
-    div.className = 'output-block' + (isError ? ' error' : '');
-    outputArea.appendChild(div);
-    termBody.scrollTop = termBody.scrollHeight;
-
-    if (instant) {
-        div.innerHTML = html;
-    } else {
-        await typewrite(div, html, 5);
+  window.openWin = function(id) {
+    const w = document.getElementById('win-' + id);
+    if (!w) return;
+    if (window.innerWidth < 768) {
+      if (!w.style.left || w.style.left === '0px') { w.style.left = '5%'; w.style.top = '10%'; }
     }
+    w.classList.add('open');
+    w.style.display = 'flex';
+    w.removeAttribute('aria-hidden');
+    winstates[id] = { open: true, minimized: false };
+    bringFront(id);
+    updateTaskbar();
+    if (id === 'skills') setTimeout(animateBars, 200);
+    if (id === 'terminal') setTimeout(() => document.getElementById('termInput').focus(), 80);
+  };
 
-    div.querySelectorAll('.skill-bar-fill[data-val]').forEach(el => {
-        setTimeout(() => el.style.width = el.dataset.val + '%', 80);
+  window.closeWin = function(id) {
+    const w = document.getElementById('win-' + id);
+    w.classList.remove('open');
+    w.style.display = 'none';
+    w.setAttribute('aria-hidden', 'true');
+    delete winstates[id];
+    updateTaskbar();
+  };
+
+  window.minWin = function(id) {
+    const w = document.getElementById('win-' + id);
+    if (!winstates[id]) { winstates[id] = { open: true, minimized: false }; }
+    winstates[id].minimized = !winstates[id].minimized;
+    if (winstates[id].minimized) {
+      w.style.display = 'none'; w.classList.remove('open'); w.setAttribute('aria-hidden','true');
+    } else {
+      w.style.display = 'flex'; w.classList.add('open'); w.removeAttribute('aria-hidden'); bringFront(id);
+    }
+    updateTaskbar();
+  };
+
+  const preMaxSize = {};
+  window.maxWin = function(id) {
+    const w = document.getElementById('win-' + id);
+    if (!winstates[id]) { winstates[id] = { open: true, minimized: false }; }
+    if (w.dataset.maximized === '1') {
+      const s = preMaxSize[id];
+      if (s) { w.style.width = s.w; w.style.height = s.h; w.style.left = s.l; w.style.top = s.t; }
+      w.dataset.maximized = '0';
+    } else {
+      preMaxSize[id] = { w: w.style.width, h: w.style.height, l: w.style.left, t: w.style.top };
+      w.style.left = '0'; w.style.top = '0';
+      w.style.width = window.innerWidth + 'px';
+      w.style.height = (window.innerHeight - 48) + 'px';
+      w.dataset.maximized = '1';
+    }
+    bringFront(id);
+  };
+
+  function bringFront(id) { zTop++; const w = document.getElementById('win-' + id); if (w) w.style.zIndex = zTop; }
+
+  function updateTaskbar() {
+    const ta = document.getElementById('taskbarApps');
+    ta.innerHTML = '';
+    for (const [id, state] of Object.entries(winstates)) {
+      if (!state) continue;
+      const btn = document.createElement('div');
+      btn.className = 'tapp' + (!state.minimized ? ' active' : '');
+      btn.setAttribute('role', 'listitem');
+      btn.setAttribute('aria-label', WIN_LABELS[id] || id);
+      btn.innerHTML = (WIN_LABELS[id] || id) + (!state.minimized ? '<span class="tdot" aria-hidden="true"></span>' : '');
+      btn.onclick = () => minWin(id);
+      ta.appendChild(btn);
+    }
+  }
+
+  window.openAllWindows = function() { WIN_IDS.forEach(id => openWin(id)); };
+  window.closeAllWindows = function() {
+    WIN_IDS.forEach(id => { const w = document.getElementById('win-'+id); if(w) { w.classList.remove('open'); w.style.display = 'none'; w.setAttribute('aria-hidden','true'); } });
+    for(const k in winstates) delete winstates[k];
+    updateTaskbar();
+  };
+  window.toggleAllWindows = function() { const anyOpen = Object.keys(winstates).length > 0; anyOpen ? closeAllWindows() : openWin('about'); };
+
+  // Keyboard navigation for icons
+  document.querySelectorAll('.icon').forEach(icon => {
+    icon.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const id = icon.id.replace('icon-', '');
+        openWin(id);
+      }
     });
+  });
 
-    termBody.scrollTop = termBody.scrollHeight;
-}
+  let drag = null;
+  function startDrag(e, tb) {
+    if (e.target.closest('.win-controls')) return;
+    e.preventDefault();
+    const w = tb.parentElement;
+    const id = w.id.replace('win-', '');
+    bringFront(id);
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    drag = { el: w, ox: clientX - w.offsetLeft, oy: clientY - w.offsetTop };
+    w.style.transition = 'none';
+  }
+  function onDragMove(e) {
+    if (!drag) return;
+    e.preventDefault();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    let nx = clientX - drag.ox;
+    let ny = clientY - drag.oy;
+    nx = Math.max(0, Math.min(window.innerWidth - drag.el.offsetWidth, nx));
+    ny = Math.max(0, Math.min(window.innerHeight - 48 - drag.el.offsetHeight, ny));
+    drag.el.style.left = nx + 'px';
+    drag.el.style.top = ny + 'px';
+  }
+  function stopDrag() { drag = null; }
+  document.querySelectorAll('.win-tb').forEach(tb => {
+    tb.addEventListener('mousedown', e => startDrag(e, tb));
+    tb.addEventListener('touchstart', e => startDrag(e, tb), {passive: false});
+  });
+  document.addEventListener('mousemove', onDragMove);
+  document.addEventListener('touchmove', onDragMove, {passive: false});
+  document.addEventListener('mouseup', stopDrag);
+  document.addEventListener('touchend', stopDrag);
 
-const CMDS = {
-    about() {
-        return `<div class="sec-header"><span class="sec-label">// profile</span></div>
-<div class="about-card">
-  <div class="about-bg"></div>
-  <div class="about-content">
-    <div>
-      <div class="about-name">Sudam Shrestha</div>
-      <div class="about-role">Senior Full Stack Developer &amp; Tech Educator</div>
-      <div class="about-bio-line"><span class="ico">▸</span><span>6+ years building scalable web apps — Laravel, Filament, Vue/Nuxt, React &amp; Node.js.</span></div>
-      <div class="about-bio-line"><span class="ico">▸</span><span>Tech Educator at <strong style="color:var(--cyan)">CodeIT Nepal</strong> — mentoring the next generation of developers in Dharan.</span></div>
-      <div class="about-bio-line"><span class="ico">▸</span><span>Founder of <strong style="color:var(--cyan)">SudamHub</strong> — independent web &amp; software solutions based in Dharan.</span></div>
-      <div class="about-bio-line"><span class="ico">▸</span><span style="color:var(--text-mute)">Dharan-11, Sunsari, Nepal 🇳🇵</span></div>
-    </div>
-    <div>
-      <div class="stat-grid">
-        <div class="stat-box"><div class="stat-num">6+</div><div class="stat-label">Years Exp.</div></div>
-        <div class="stat-box"><div class="stat-num">50+</div><div class="stat-label">Projects</div></div>
-        <div class="stat-box"><div class="stat-num">4+</div><div class="stat-label">Frameworks</div></div>
-        <div class="stat-box"><div class="stat-num">∞</div><div class="stat-label">Coffee ☕</div></div>
-      </div>
-      <div class="motto-box">
-        <div class="motto-label">// motto</div>
-        <div class="motto-text">"Clean code, real impact, scalable systems."</div>
-      </div>
-    </div>
-  </div>
-</div>`;
-    },
+  let resz = null;
+  function startResize(e, h) {
+    e.stopPropagation(); e.preventDefault();
+    const w = document.getElementById('win-' + h.dataset.win);
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    resz = { el: w, ox: clientX, oy: clientY, ow: w.offsetWidth, oh: w.offsetHeight };
+  }
+  function onResizeMove(e) {
+    if (!resz) return;
+    e.preventDefault();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    const newWidth = Math.max(260, resz.ow + (clientX - resz.ox));
+    const newHeight = Math.max(180, resz.oh + (clientY - resz.oy));
+    resz.el.style.width = Math.min(newWidth, window.innerWidth) + 'px';
+    resz.el.style.height = Math.min(newHeight, window.innerHeight - 48) + 'px';
+  }
+  function stopResize() { resz = null; }
+  document.querySelectorAll('.rhandle').forEach(h => {
+    h.addEventListener('mousedown', e => startResize(e, h));
+    h.addEventListener('touchstart', e => startResize(e, h), {passive: false});
+  });
+  document.addEventListener('mousemove', onResizeMove);
+  document.addEventListener('touchmove', onResizeMove, {passive: false});
+  document.addEventListener('mouseup', stopResize);
+  document.addEventListener('touchend', stopResize);
 
-    whoami() { return CMDS.about(); },
+  document.querySelectorAll('.window').forEach(w => {
+    w.addEventListener('mousedown', () => bringFront(w.id.replace('win-', '')));
+    w.addEventListener('touchstart', () => bringFront(w.id.replace('win-', '')), {passive: true});
+  });
 
-    skills() {
-        return `<div class="sec-header"><span class="sec-label">// tech stack</span></div>
-<div class="tech-inline">
-  <span class="t">Laravel</span><span class="sep">,</span>
-  <span class="t">Filament</span><span class="sep">,</span>
-  <span class="t">Vue.js</span><span class="sep">,</span>
-  <span class="t">Nuxt.js</span><span class="sep">,</span>
-  <span class="t">React</span><span class="sep">,</span>
-  <span class="t">Next.js</span><span class="sep">,</span>
-  <span class="t">Node.js</span><span class="sep">,</span>
-  <span class="t">TailwindCSS</span><span class="sep">,</span>
-  <span class="t">MySQL</span><span class="sep">,</span>
-  <span class="t">PostgreSQL</span><span class="sep">,</span>
-  <span class="t">REST API</span><span class="sep">,</span>
-  <span class="t">GraphQL</span><span class="sep">,</span>
-  <span class="t">Docker</span><span class="sep">,</span>
-  <span class="t">CI/CD</span><span class="sep">,</span>
-  <span class="t">Figma</span><span class="sep">,</span>
-  <span class="t">PHP</span><span class="sep">,</span>
-  <span class="t">JavaScript</span>
-</div>
-<div class="skill-group">
-  <div class="skill-group-label">// proficiency</div>
-  <div class="skill-row"><span class="skill-label">Laravel / Filament</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="95"></div></div><span class="skill-pct">95%</span></div>
-  <div class="skill-row"><span class="skill-label">TailwindCSS</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="92"></div></div><span class="skill-pct">92%</span></div>
-  <div class="skill-row"><span class="skill-label">Vue.js / Nuxt.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90"></div></div><span class="skill-pct">90%</span></div>
-  <div class="skill-row"><span class="skill-label">REST / GraphQL APIs</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90"></div></div><span class="skill-pct">90%</span></div>
-  <div class="skill-row"><span class="skill-label">React / Next.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88"></div></div><span class="skill-pct">88%</span></div>
-  <div class="skill-row"><span class="skill-label">MySQL / PostgreSQL</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88"></div></div><span class="skill-pct">88%</span></div>
-  <div class="skill-row"><span class="skill-label">Node.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="85"></div></div><span class="skill-pct">85%</span></div>
-  <div class="skill-row"><span class="skill-label">Docker / CI-CD</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-val="80"></div></div><span class="skill-pct">80%</span></div>
-</div>`;
-    },
+  function animateBars() {
+    document.querySelectorAll('.skill-fill[data-val]').forEach(el => { el.style.width = el.dataset.val + '%'; });
+  }
 
-    projects() {
-        return `<div class="sec-header"><span class="sec-label">// featured projects</span></div>
-<div class="card-grid">
-  <div class="proj-card"><div class="proj-title">📚 Student Portal API</div><div class="proj-desc">Backend API for student management at CodeIT. Handles data, auth, and real-time interactions.</div><span class="badge green">CodeIT</span></div>
-  <div class="proj-card"><div class="proj-title">🎁 Koseli Express</div><div class="proj-desc">Full-stack gifting &amp; delivery e-commerce. Cart, payments, live order tracking.</div><span class="badge blue">SudamHub</span></div>
-  <div class="proj-card"><div class="proj-title">❓ Jawaaf</div><div class="proj-desc">Community Q&amp;A and knowledge sharing platform with voting and moderation.</div><span class="badge blue">SudamHub</span></div>
-  <div class="proj-card"><div class="proj-title">🍛 Dharan Kitchen</div><div class="proj-desc">Food ordering platform for local restaurants with menus and online ordering flow.</div><span class="badge blue">SudamHub</span></div>
-  <div class="proj-card"><div class="proj-title">🔪 NB Khukuri</div><div class="proj-desc">Smart e-commerce for authentic Nepali khukuri products with global shipping.</div><span class="badge blue">SudamHub</span></div>
-  <div class="proj-card"><div class="proj-title">🏫 CodeIT Platform</div><div class="proj-desc">IT training platform powering courses, student management, and certification flows.</div><span class="badge green">CodeIT</span></div>
-</div>
-<div style="font-size:11.5px;color:var(--text-mute);margin-top:4px">50+ projects delivered across CodeIT &amp; SudamHub.</div>`;
-    },
+  window.selectIcon = function(id) {
+    document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+    const ic = document.getElementById('icon-' + id);
+    if (ic) ic.classList.add('selected');
+  };
+  document.getElementById('desktop').addEventListener('click', e => {
+    if (!e.target.closest('.icon')) document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+  });
 
-    experience() {
-        return `<div class="sec-header"><span class="sec-label">// work timeline</span></div>
-<div class="timeline">
-  <div class="timeline-item">
-    <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
-    <div class="tl-right"><div class="tl-period">JAN 2022 — PRESENT</div><div class="tl-title">Senior Full Stack Developer &amp; Tech Educator — CodeIT Nepal</div><div class="tl-desc">Leading web development with Laravel, Filament, Vue &amp; React. Mentoring students on real-world projects.</div></div>
-  </div>
-  <div class="timeline-item">
-    <div class="tl-left"><div class="tl-dot" style="background:var(--blue);box-shadow:0 0 8px rgba(77,159,255,0.5)"></div><div class="tl-line"></div></div>
-    <div class="tl-right"><div class="tl-period">JUL 2020 — JAN 2022</div><div class="tl-title">Full Stack Developer — CodeIT Nepal</div><div class="tl-desc">Delivered 50+ projects using Laravel, Nuxt.js, and Node.js. Promoted from junior to full-time role.</div></div>
-  </div>
-  <div class="timeline-item">
-    <div class="tl-left"><div class="tl-dot" style="background:var(--purple);box-shadow:0 0 8px rgba(176,125,255,0.5)"></div><div class="tl-line" style="background:transparent"></div></div>
-    <div class="tl-right"><div class="tl-period">2019 — 2020</div><div class="tl-title">Intern — CodeIT Nepal</div><div class="tl-desc">Intensive one-year internship mastering PHP, JavaScript, and full-stack fundamentals.</div></div>
-  </div>
-</div>
-<div style="padding:10px 14px;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.14);border-radius:6px;font-size:12px;color:var(--text-dim)">⚡ Also: Founder of <strong style="color:var(--cyan)">SudamHub</strong> — independent software &amp; web development services in Dharan.</div>`;
-    },
+  const ctx = document.getElementById('ctxMenu');
+  document.getElementById('desktop').addEventListener('contextmenu', e => {
+    e.preventDefault();
+    ctx.style.left = Math.min(e.clientX, window.innerWidth - 160) + 'px';
+    ctx.style.top = Math.min(e.clientY, window.innerHeight - 180) + 'px';
+    ctx.classList.add('show');
+  });
+  document.addEventListener('click', () => ctx.classList.remove('show'));
+  document.addEventListener('touchstart', () => ctx.classList.remove('show'), {passive: true});
 
-    contact() {
-        return `<div class="sec-header"><span class="sec-label">// get in touch</span></div>
-<div class="contact-grid">
-  <div class="contact-item"><div class="contact-ico">📧</div><div><div class="contact-label">Email</div><div class="contact-val">sudamshrestha939@gmail.com</div></div></div>
-  <div class="contact-item"><div class="contact-ico">📱</div><div><div class="contact-label">Phone</div><div class="contact-val">+977 9704508525</div></div></div>
-  <div class="contact-item"><div class="contact-ico">📍</div><div><div class="contact-label">Location</div><div class="contact-val">Dharan-11, Sunsari, Nepal</div></div></div>
-  <div class="contact-item"><div class="contact-ico">🌐</div><div><div class="contact-label">Website</div><div class="contact-val">sudamshrestha.com.np</div></div></div>
-</div>
-<div style="margin-top:10px;font-size:11.5px;color:var(--text-mute)">Open for collaborations, freelance projects, and mentoring opportunities.</div>`;
-    },
+  function tick() { document.getElementById('tbClock').textContent = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
+  tick(); setInterval(tick, 1000);
 
-    help() {
-        return `<div class="sec-header"><span class="sec-label">// available commands</span></div>
-<div class="help-grid">
-  <div class="help-row"><span class="help-cmd">about</span><span class="help-sep">→</span><span class="help-desc">Bio, role &amp; profile</span></div>
-  <div class="help-row"><span class="help-cmd">skills</span><span class="help-sep">→</span><span class="help-desc">Tech stack &amp; proficiency</span></div>
-  <div class="help-row"><span class="help-cmd">projects</span><span class="help-sep">→</span><span class="help-desc">Project showcase</span></div>
-  <div class="help-row"><span class="help-cmd">experience</span><span class="help-sep">→</span><span class="help-desc">Work timeline</span></div>
-  <div class="help-row"><span class="help-cmd">contact</span><span class="help-sep">→</span><span class="help-desc">Email &amp; details</span></div>
-  <div class="help-row"><span class="help-cmd">tree</span><span class="help-sep">→</span><span class="help-desc">Directory structure</span></div>
-  <div class="help-row"><span class="help-cmd">clear</span><span class="help-sep">→</span><span class="help-desc">Reset terminal</span></div>
-  <div class="help-row"><span class="help-cmd">sudo</span><span class="help-sep">→</span><span class="help-desc">???</span></div>
-</div>`;
-    },
+  const ESC = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  let isTyping = false;
+  let typingInterval = null;
+  let currentTypingElement = null;
+  let currentTypingText = '';
+  let currentTypingCursor = null;
 
-    tree() {
-        return `<div class="tree-block"><span style="color:var(--cyan)">~/sudam/</span><br>
-├── <span style="color:var(--text)">📄 about.me</span><span style="color:var(--text-mute)">      — Senior Full Stack · SudamHub Founder</span><br>
-├── <span style="color:var(--text)">📂 skills/</span><span style="color:var(--text-mute)">       — Laravel · Vue · React · Node · Tailwind</span><br>
-├── <span style="color:var(--text)">📂 projects/</span><span style="color:var(--text-mute)">     — 50+ delivered · CodeIT + SudamHub</span><br>
-├── <span style="color:var(--text)">📂 experience/</span><span style="color:var(--text-mute)">   — 6+ years · CodeIT Nepal</span><br>
-└── <span style="color:var(--text)">📞 contact.info</span><span style="color:var(--text-mute)">  — Dharan-11, Nepal</span><br><br>
-<span style="color:var(--text-mute)">5 entries · last modified 2026</span></div>`;
-    },
+  function stopTyping() {
+    if (typingInterval) { clearInterval(typingInterval); typingInterval = null; }
+    if (currentTypingElement) { currentTypingElement.innerHTML = currentTypingText; }
+    if (currentTypingCursor) { currentTypingCursor.remove(); currentTypingCursor = null; }
+    isTyping = false; currentTypingElement = null;
+    termInput.disabled = false; termInput.focus();
+  }
 
-    sudo() {
-        return `<span style="color:var(--orange)">[sudo] password for sudam: ••••••••••</span><br><span style="color:var(--green)">Access granted.</span> Secret: <em style="color:var(--text)">"Build real projects. Mentor others. Keep shipping."</em> 🚀`;
-    },
-};
+  function typeText(element, htmlContent, speed = 10) {
+    stopTyping();
+    isTyping = true; currentTypingElement = element; currentTypingText = htmlContent;
+    termInput.disabled = true;
+    element.innerHTML = '';
+    currentTypingCursor = document.createElement('span');
+    currentTypingCursor.className = 'typing-cursor';
+    element.appendChild(currentTypingCursor);
+    let charIndex = 0; let htmlString = htmlContent; let currentHTML = '';
+    typingInterval = setInterval(() => {
+      if (charIndex < htmlString.length) {
+        if (htmlString[charIndex] === '<') {
+          const closeIndex = htmlString.indexOf('>', charIndex);
+          if (closeIndex !== -1) { currentHTML = htmlString.substring(0, closeIndex + 1); charIndex = closeIndex + 1; }
+          else { currentHTML += htmlString[charIndex]; charIndex++; }
+        } else { currentHTML += htmlString[charIndex]; charIndex++; }
+        const cursor = currentTypingCursor;
+        element.innerHTML = currentHTML;
+        element.appendChild(cursor);
+        const to = document.getElementById('termOut'); to.scrollTop = to.scrollHeight;
+      } else {
+        clearInterval(typingInterval); typingInterval = null;
+        if (currentTypingCursor) { currentTypingCursor.remove(); currentTypingCursor = null; }
+        isTyping = false; currentTypingElement = null;
+        termInput.disabled = false; termInput.focus();
+      }
+    }, speed);
+  }
 
-function hardReset() {
-    outputArea.innerHTML = `
-<div class="boot-header">
-  <div class="ascii-logo"> ██████  ██    ██ ██████   █████  ███    ███
-██       ██    ██ ██   ██ ██   ██ ████  ████
- █████   ██    ██ ██   ██ ███████ ██ ████ ██
-     ██  ██    ██ ██   ██ ██   ██ ██  ██  ██
-██████    ██████  ██████  ██   ██ ██      ██</div>
-  <div class="boot-meta">
-    <div><span>OS&nbsp;&nbsp;</span> SudamOS v2026.1</div>
-    <div><span>HOST</span> sudamhub.com</div>
-    <div><span>SHELL</span> zsh 5.9</div>
-    <div><span>LOC&nbsp;</span> Dharan, Nepal</div>
-  </div>
-</div>
-<hr class="divider">
-<div class="welcome-line">Terminal cleared. Type <span class="hl">'help'</span> to list commands.</div>
-<hr class="divider">`;
-}
+  const TCMDS = {
+    help: () => `<div style="font-size:9px;color:var(--text-mute);margin-bottom:6px;">// commands</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:9px;"><div><span style="color:var(--cyan)">about</span> <span style="color:var(--text-dim)">Bio</span></div><div><span style="color:var(--cyan)">skills</span> <span style="color:var(--text-dim)">Tech</span></div><div><span style="color:var(--cyan)">projects</span> <span style="color:var(--text-dim)">Work</span></div><div><span style="color:var(--cyan)">contact</span> <span style="color:var(--text-dim)">Info</span></div><div><span style="color:var(--cyan)">clear</span> <span style="color:var(--text-dim)">Clear</span></div><div><span style="color:var(--cyan)">open [x]</span> <span style="color:var(--text-dim)">Window</span></div></div>`,
+    about: () => `<span style="color:var(--cyan);font-size:12px;">Sudam Shrestha</span>\n<span style="color:var(--text-dim);">Senior Full Stack Developer</span>\n\n<span style="color:var(--cyan);">▸</span> 6+ years Laravel, Vue, React, Node\n<span style="color:var(--cyan);">▸</span> Tech Educator at CodeIT Nepal\n<span style="color:var(--cyan);">▸</span> Founder of SudamHub\n<span style="color:var(--cyan);">▸</span> 📍 Dharan, Nepal\n\n<span style="color:var(--cyan-dim);">Motto:</span> "Clean code, real impact."`,
+    skills: () => `<span style="color:var(--cyan);font-size:12px;">Tech Stack</span>\n\n<span style="color:var(--cyan);">▸</span> Laravel/Filament — 95%\n<span style="color:var(--cyan);">▸</span> Vue/Nuxt — 90%\n<span style="color:var(--cyan);">▸</span> React/Next — 88%\n<span style="color:var(--cyan);">▸</span> Node.js — 85%\n<span style="color:var(--cyan);">▸</span> Tailwind — 92%\n<span style="color:var(--cyan);">▸</span> MySQL/PG — 88%`,
+    projects: () => `<span style="color:var(--cyan);font-size:12px;">Projects</span>\n\n<span style="color:var(--cyan);">📚</span> Student Portal API\n<span style="color:var(--cyan);">🎁</span> Koseli Express\n<span style="color:var(--cyan);">❓</span> Jawaaf Q&A\n<span style="color:var(--cyan);">🍛</span> Dharan Kitchen\n<span style="color:var(--cyan);">🏫</span> CodeIT Platform`,
+    experience: () => `<span style="color:var(--cyan);font-size:12px;">Experience</span>\n\n<span style="color:var(--cyan);">▸</span> 2022-Present: Senior Dev @ CodeIT\n<span style="color:var(--cyan);">▸</span> 2020-2022: Full Stack @ CodeIT\n<span style="color:var(--cyan);">▸</span> 2019-2020: Intern @ CodeIT`,
+    contact: () => `<span style="color:var(--cyan);font-size:12px;">Contact</span>\n\n<span style="color:var(--cyan);">📧</span> sudamshrestha939@gmail.com\n<span style="color:var(--cyan);">📱</span> +977 9704508525\n<span style="color:var(--cyan);">📍</span> Dharan-11, Nepal`,
+    whoami: () => `<span style="color:var(--cyan);">sudam</span> — Senior Full Stack Developer<br><span style="color:var(--text-mute);">CodeIT Nepal · SudamHub Founder</span>`,
+    ls: () => `<span style="color:var(--cyan);">~/sudam/</span>\n<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📄 about.me</span>\n<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📂 skills/</span>\n<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📂 projects/</span>\n<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📞 contact.info</span>`,
+    pwd: () => `<span style="color:var(--text-dim);">/home/sudam/portfolio</span>`,
+    clear: () => '',
+    sudo: () => `<span style="color:var(--orange);">[sudo] password: ••••••</span><br><span style="color:var(--green);">Access granted.</span> 🚀`,
+  };
 
-async function processInput(raw) {
+  const termOut = document.getElementById('termOut');
+  const termInput = document.getElementById('termInput');
+  let tHistory = [], tIdx = 0;
+
+  function termExec(raw) {
+    if (isTyping) stopTyping();
     const val = raw.trim();
-    if (!val || isTyping) return;
-
+    if (!val) return;
     const echo = document.createElement('div');
     echo.className = 'cmd-echo';
-    echo.innerHTML = `<span style="color:var(--green)">sudam</span><span style="color:var(--text-mute)">@sudamhub</span><span style="color:var(--cyan);margin:0 6px">›</span><span style="color:var(--text)">${esc(val)}</span>`;
-    outputArea.appendChild(echo);
-
-    cmdHistory.push(val);
-    historyIndex = cmdHistory.length;
-    inputElem.value = '';
-    termBody.scrollTop = termBody.scrollHeight;
-
-    const cmd = val.toLowerCase().split(/\s+/)[0];
-
-    if (cmd === 'clear') { hardReset(); return; }
-
-    if (CMDS[cmd]) {
-        await appendOutput(CMDS[cmd]());
+    echo.innerHTML = `<span style="color:var(--green)">sudam</span><span style="color:var(--text-mute)">@sudamhub</span><span style="color:var(--cyan);">›</span> <span style="color:var(--text)">${ESC(val)}</span>`;
+    termOut.appendChild(echo);
+    tHistory.push(val); tIdx = tHistory.length;
+    const parts = val.toLowerCase().split(/\s+/); const cmd = parts[0]; const arg = parts[1];
+    if (cmd === 'clear') { termOut.innerHTML = '<div style="font-size:10px;color:var(--text-dim);">Cleared. Type <span style="color:var(--cyan)">help</span>.</div>'; return; }
+    const blk = document.createElement('div'); blk.className = 'out-blk';
+    if (cmd === 'open' && arg) {
+      if (WIN_IDS.includes(arg)) { openWin(arg); blk.innerHTML = `<span style="color:var(--green)">✓ Opened ${arg}</span>`; }
+      else { blk.innerHTML = `<span style="color:var(--red)">open: ${ESC(arg)} not found</span>`; blk.classList.add('err'); }
+      termOut.appendChild(blk); termOut.scrollTop = termOut.scrollHeight;
+    } else if (TCMDS[cmd]) {
+      const output = TCMDS[cmd]();
+      termOut.appendChild(blk); termOut.scrollTop = termOut.scrollHeight;
+      if (output) typeText(blk, output, 8);
     } else {
-        await appendOutput(
-            `<span style="color:var(--red)">bash: ${esc(cmd)}: command not found</span>  —  type <span style="color:var(--cyan)">help</span> for available commands.`,
-            { isError: true }
-        );
+      blk.innerHTML = `<span style="color:var(--red)">bash: ${ESC(cmd)} not found</span>`; blk.classList.add('err');
+      termOut.appendChild(blk); termOut.scrollTop = termOut.scrollHeight;
     }
-}
+  }
 
-inputElem.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        processInput(inputElem.value);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (historyIndex > 0) inputElem.value = cmdHistory[--historyIndex] || '';
-    } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        if (historyIndex < cmdHistory.length - 1) inputElem.value = cmdHistory[++historyIndex];
-        else { historyIndex = cmdHistory.length; inputElem.value = ''; }
-    }
-});
+  termInput.addEventListener('keydown', e => {
+    if (isTyping) { e.preventDefault(); return; }
+    if (e.key === 'Enter') { const v = termInput.value; termInput.value = ''; termExec(v); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); if (tIdx > 0) termInput.value = tHistory[--tIdx] || ''; }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); if (tIdx < tHistory.length - 1) termInput.value = tHistory[++tIdx]; else { tIdx = tHistory.length; termInput.value = ''; } }
+  });
 
-document.getElementById('terminalRoot').addEventListener('click', () => inputElem.focus());
-inputElem.focus();
+  document.getElementById('win-terminal').addEventListener('click', () => { if (!isTyping) termInput.focus(); });
 
-setTimeout(() => {
-    appendOutput(`System booted. &nbsp;<span style="color:var(--text-mute)">Try:</span> <span style="color:var(--cyan)">about</span> · <span style="color:var(--cyan)">skills</span> · <span style="color:var(--cyan)">projects</span> · <span style="color:var(--cyan)">contact</span>`, { instant: true });
-}, 200);
+  // Initialize all windows as aria-hidden
+  WIN_IDS.forEach(id => {
+    const w = document.getElementById('win-' + id);
+    if (w) w.setAttribute('aria-hidden', 'true');
+  });
+
+})();
