@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Sudam Shrestha | Senior Full Stack Developer & Tech Educator — Dharan, Nepal</title>
   <meta name="description" content="Sudam Shrestha is a Senior Full Stack Developer and Tech Educator at CodeIT Nepal, and Founder of SudamHub. Expert in Laravel, Filament, Vue.js, Nuxt.js, React, and Node.js. Based in Dharan, Nepal.">
   <meta name="keywords" content="Sudam Shrestha, Full Stack Developer Nepal, Laravel Developer Nepal, SudamHub, CodeIT Nepal, Web Developer Dharan, Filament Developer, Vue.js Developer Nepal, React Developer Nepal, Tech Educator Nepal, Sunsari developer">
@@ -88,6 +88,8 @@
       font-family: var(--font);
       color: var(--text);
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
     }
 
     /* ============================================================
@@ -123,8 +125,9 @@
       inset: 0;
       bottom: 52px;
       z-index: 1;
-      padding: 24px 18px;
+      padding: 16px 12px;
       overflow-y: auto;
+      overflow-x: hidden;
     }
 
     /* ============================================================
@@ -134,7 +137,7 @@
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       max-height: calc(100vh - 100px);
       width: fit-content;
     }
@@ -143,12 +146,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 10px 8px 8px;
+      gap: 5px;
+      padding: 8px 6px 6px;
       border-radius: 10px;
       cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
-      width: 78px;
+      width: 72px;
       border: 1px solid transparent;
       text-align: center;
     }
@@ -157,18 +160,18 @@
     .icon.selected { background: rgba(0,212,170,0.1); border-color: rgba(0,212,170,0.3); }
 
     .icon-img {
-      width: 50px;
-      height: 50px;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: 24px;
       flex-shrink: 0;
     }
 
     .icon-label {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text);
       line-height: 1.3;
       word-break: break-word;
@@ -181,14 +184,14 @@
     .taskbar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      height: 52px;
+      height: 48px;
       background: rgba(10,13,24,0.96);
       border-top: 1px solid var(--border2);
       z-index: 1000;
       display: flex;
       align-items: center;
-      padding: 0 12px;
-      gap: 8px;
+      padding: 0 8px;
+      gap: 6px;
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
     }
@@ -196,31 +199,31 @@
     .start-btn {
       display: flex;
       align-items: center;
-      gap: 7px;
-      padding: 6px 12px;
+      gap: 5px;
+      padding: 5px 10px;
       background: rgba(0,212,170,0.09);
       border: 1px solid rgba(0,212,170,0.25);
       border-radius: 7px;
       color: var(--cyan);
       font-family: var(--font);
-      font-size: 11px;
+      font-size: 10px;
       cursor: pointer;
       transition: background 0.2s;
       flex-shrink: 0;
     }
     .start-btn:hover { background: rgba(0,212,170,0.18); }
 
-    .taskbar-sep { width: 1px; height: 26px; background: var(--border2); flex-shrink: 0; }
+    .taskbar-sep { width: 1px; height: 22px; background: var(--border2); flex-shrink: 0; }
 
-    .taskbar-apps { display: flex; gap: 4px; flex: 1; overflow-x: auto; overflow-y: hidden; }
+    .taskbar-apps { display: flex; gap: 3px; flex: 1; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
 
     .tapp {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 10px;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 9px;
       color: var(--text-dim);
       cursor: pointer;
       border: 1px solid transparent;
@@ -232,19 +235,19 @@
     .tapp:hover { background: rgba(255,255,255,0.05); color: var(--text); }
     .tapp.active { background: rgba(0,212,170,0.08); border-color: rgba(0,212,170,0.2); color: var(--cyan); }
     .tapp .tdot {
-      position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
-      width: 4px; height: 4px; border-radius: 50%; background: var(--cyan);
+      position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+      width: 3px; height: 3px; border-radius: 50%; background: var(--cyan);
     }
 
     .taskbar-right {
       margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       flex-shrink: 0;
     }
-    .tb-loc { font-size: 9px; color: var(--text-mute); }
-    .tb-clock { font-size: 11px; color: var(--text); }
+    .tb-loc { font-size: 8px; color: var(--text-mute); }
+    .tb-clock { font-size: 10px; color: var(--text); }
 
     /* ============================================================
        WINDOWS
@@ -253,34 +256,33 @@
       position: fixed;
       background: var(--surface);
       border: 1px solid var(--border2);
-      border-radius: 13px;
+      border-radius: 12px;
       box-shadow:
         0 0 0 1px rgba(0,212,170,0.04),
-        0 28px 72px rgba(0,0,0,0.72),
-        0 8px 24px rgba(0,0,0,0.4);
+        0 20px 50px rgba(0,0,0,0.7);
       z-index: 100;
       display: none;
       flex-direction: column;
       overflow: hidden;
-      min-width: 280px;
-      min-height: 200px;
-      max-width: 100vw;
-      max-height: calc(100vh - 52px);
+      min-width: 260px;
+      min-height: 180px;
+      max-width: calc(100vw - 20px);
+      max-height: calc(100vh - 60px);
     }
     .window.open { display: flex; }
 
     /* Title bar */
     .win-tb {
       background: var(--surface2);
-      padding: 0 12px;
-      height: 40px;
+      padding: 0 10px;
+      height: 38px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       border-bottom: 1px solid var(--border);
       cursor: grab;
       flex-shrink: 0;
-      -webkit-app-region: drag;
+      touch-action: none;
     }
     .win-tb:active { cursor: grabbing; }
 
@@ -288,23 +290,21 @@
     .win-title-left {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 5px;
       flex-shrink: 0;
     }
     
     /* Title center (spacer) */
     .win-title-spacer {
       flex: 1;
-      -webkit-app-region: drag;
     }
 
-    /* Window controls - moved to right side with proper icons */
+    /* Window controls */
     .win-controls {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       margin-left: auto;
       flex-shrink: 0;
-      -webkit-app-region: no-drag;
     }
     .wc-btn {
       width: 28px;
@@ -314,12 +314,13 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.15s, filter 0.15s;
-      font-size: 16px;
+      transition: background 0.15s;
+      font-size: 15px;
       font-weight: 400;
       color: var(--text-dim);
       border: none;
       background: transparent;
+      touch-action: manipulation;
     }
     .wc-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
     .wc-btn.close-btn:hover { background: #e81123; color: white; }
@@ -328,8 +329,8 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 7px;
-      font-size: 10px;
+      gap: 5px;
+      font-size: 9px;
       color: var(--text-dim);
       pointer-events: none;
     }
@@ -338,19 +339,22 @@
     .win-body {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 18px;
+      overflow-x: hidden;
+      padding: 14px 16px;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
-    .win-body::-webkit-scrollbar { width: 4px; }
+    .win-body::-webkit-scrollbar { width: 3px; }
     .win-body::-webkit-scrollbar-track { background: transparent; }
-    .win-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    .win-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
     /* Resize */
     .rhandle {
       position: absolute;
       bottom: 0; right: 0;
-      width: 16px; height: 16px;
+      width: 20px; height: 20px;
       cursor: se-resize;
+      touch-action: none;
     }
     .rhandle::after {
       content: '';
@@ -367,70 +371,67 @@
        WINDOW CONTENT STYLES
     ============================================================ */
     .sec-hdr {
-      font-size: 9px;
+      font-size: 8px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--text-mute);
-      margin-bottom: 16px;
-      padding-bottom: 8px;
+      margin-bottom: 14px;
+      padding-bottom: 6px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .sec-hdr::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     /* About */
-    .about-name { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .about-role { font-size: 10px; color: var(--cyan); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 16px; }
-    .bio-line { display: flex; align-items: flex-start; gap: 8px; margin: 7px 0; font-size: 11px; color: rgba(205,214,244,0.85); line-height: 1.6; }
+    .about-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.02em; margin-bottom: 3px; }
+    .about-role { font-size: 9px; color: var(--cyan); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 14px; }
+    .bio-line { display: flex; align-items: flex-start; gap: 7px; margin: 6px 0; font-size: 10px; color: rgba(205,214,244,0.85); line-height: 1.55; }
     .bio-line .ico { color: var(--cyan); flex-shrink: 0; margin-top: 1px; }
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px 0 12px; }
-    .stat-box { background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 12px; text-align: center; transition: border-color 0.2s; }
-    .stat-box:hover { border-color: rgba(0,212,170,0.3); }
-    .stat-num { font-size: 20px; font-weight: 700; color: var(--cyan); line-height: 1; margin-bottom: 3px; }
-    .stat-lbl { font-size: 8px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
-    .motto-box { background: rgba(0,212,170,0.05); border: 1px solid rgba(0,212,170,0.15); border-radius: 8px; padding: 10px 14px; }
-    .motto-lbl { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-dim); margin-bottom: 4px; }
-    .motto-txt { font-size: 11px; color: rgba(205,214,244,0.88); font-style: italic; line-height: 1.5; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 14px 0 10px; }
+    .stat-box { background: var(--bg); border: 1px solid var(--border2); border-radius: 7px; padding: 8px 10px; text-align: center; }
+    .stat-num { font-size: 18px; font-weight: 700; color: var(--cyan); line-height: 1; margin-bottom: 2px; }
+    .stat-lbl { font-size: 7px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
+    .motto-box { background: rgba(0,212,170,0.05); border: 1px solid rgba(0,212,170,0.15); border-radius: 7px; padding: 8px 12px; }
+    .motto-lbl { font-size: 7px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-dim); margin-bottom: 3px; }
+    .motto-txt { font-size: 10px; color: rgba(205,214,244,0.88); font-style: italic; line-height: 1.45; }
 
     /* Skills */
-    .tech-wrap { font-size: 11px; color: var(--text-dim); line-height: 2; margin-bottom: 16px; }
+    .tech-wrap { font-size: 10px; color: var(--text-dim); line-height: 1.9; margin-bottom: 14px; }
     .tech-wrap .t { color: var(--cyan); border-bottom: 1px solid rgba(0,212,170,0.3); padding-bottom: 1px; }
-    .tech-wrap .sep { color: var(--text-mute); margin: 0 3px; }
-    .skill-group-lbl { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 8px; }
-    .skill-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-size: 11px; }
-    .skill-lbl { color: var(--text-dim); width: 140px; flex-shrink: 0; }
+    .tech-wrap .sep { color: var(--text-mute); margin: 0 2px; }
+    .skill-group-lbl { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 7px; }
+    .skill-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 10px; }
+    .skill-lbl { color: var(--text-dim); width: 110px; flex-shrink: 0; }
     .skill-bg { flex: 1; height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
-    .skill-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--blue)); border-radius: 2px; width: 0; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .skill-pct { color: var(--cyan); font-size: 10px; width: 30px; text-align: right; flex-shrink: 0; }
+    .skill-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--blue)); border-radius: 2px; width: 0; transition: width 1.2s; }
+    .skill-pct { color: var(--cyan); font-size: 9px; width: 28px; text-align: right; flex-shrink: 0; }
 
     /* Projects */
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin: 8px 0; }
-    .proj-card { background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 12px 14px; cursor: default; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
-    .proj-card:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,170,0.07); }
-    .proj-title { color: var(--cyan); font-size: 11px; font-weight: 500; margin-bottom: 5px; }
-    .proj-desc { color: var(--text-dim); font-size: 10px; line-height: 1.6; margin-bottom: 8px; }
-    .badge { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 3px; border: 1px solid; }
+    .card-grid { display: grid; grid-template-columns: 1fr; gap: 7px; margin: 7px 0; }
+    .proj-card { background: var(--bg); border: 1px solid var(--border2); border-radius: 7px; padding: 10px 12px; cursor: default; }
+    .proj-title { color: var(--cyan); font-size: 10px; font-weight: 500; margin-bottom: 4px; }
+    .proj-desc { color: var(--text-dim); font-size: 9px; line-height: 1.5; margin-bottom: 7px; }
+    .badge { display: inline-block; font-size: 8px; padding: 1px 5px; border-radius: 3px; border: 1px solid; }
     .badge.g { color: var(--green); border-color: rgba(107,255,142,0.3); background: rgba(107,255,142,0.05); }
     .badge.b { color: var(--blue); border-color: rgba(77,159,255,0.3); background: rgba(77,159,255,0.05); }
 
     /* Experience */
-    .tl-item { display: flex; gap: 12px; margin-bottom: 16px; }
-    .tl-left { display: flex; flex-direction: column; align-items: center; width: 12px; flex-shrink: 0; }
-    .tl-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px rgba(0,212,170,0.5); margin-top: 4px; flex-shrink: 0; }
-    .tl-line { flex: 1; width: 1px; background: var(--border2); margin-top: 5px; }
-    .tl-period { font-size: 9px; color: var(--cyan-dim); letter-spacing: 0.06em; margin-bottom: 2px; }
-    .tl-title { font-size: 11px; color: var(--text); font-weight: 500; margin-bottom: 3px; line-height: 1.4; }
-    .tl-desc { font-size: 10px; color: var(--text-dim); line-height: 1.6; }
+    .tl-item { display: flex; gap: 10px; margin-bottom: 14px; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; width: 10px; flex-shrink: 0; }
+    .tl-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); margin-top: 3px; flex-shrink: 0; }
+    .tl-line { flex: 1; width: 1px; background: var(--border2); margin-top: 4px; }
+    .tl-period { font-size: 8px; color: var(--cyan-dim); letter-spacing: 0.06em; margin-bottom: 2px; }
+    .tl-title { font-size: 10px; color: var(--text); font-weight: 500; margin-bottom: 2px; line-height: 1.35; }
+    .tl-desc { font-size: 9px; color: var(--text-dim); line-height: 1.5; }
 
     /* Contact */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
-    .contact-item { background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; transition: border-color 0.2s; }
-    .contact-item:hover { border-color: rgba(0,212,170,0.25); }
-    .contact-ico { font-size: 18px; flex-shrink: 0; }
-    .contact-lbl { font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
-    .contact-val { font-size: 10px; color: var(--text); margin-top: 2px; word-break: break-all; }
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 7px; margin: 7px 0; }
+    .contact-item { background: var(--bg); border: 1px solid var(--border2); border-radius: 7px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; }
+    .contact-ico { font-size: 16px; flex-shrink: 0; }
+    .contact-lbl { font-size: 8px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
+    .contact-val { font-size: 9px; color: var(--text); margin-top: 1px; word-break: break-all; }
 
     /* ============================================================
        TERMINAL WINDOW
@@ -438,22 +439,23 @@
     .term-out {
       flex: 1;
       overflow-y: auto;
-      padding: 14px 16px;
-      font-size: 11px;
-      line-height: 1.7;
+      padding: 12px 14px;
+      font-size: 10px;
+      line-height: 1.6;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
-    .term-out::-webkit-scrollbar { width: 4px; }
+    .term-out::-webkit-scrollbar { width: 3px; }
     .term-out::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
     .term-input-row {
       flex-shrink: 0;
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding: 8px 16px;
+      padding: 7px 14px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .term-input {
@@ -461,7 +463,7 @@
       border: none;
       color: var(--text);
       font-family: var(--font);
-      font-size: 11px;
+      font-size: 10px;
       flex: 1;
       outline: none;
       caret-color: var(--cyan);
@@ -469,11 +471,11 @@
     .term-input::placeholder { color: var(--text-mute); }
     .term-input:disabled { opacity: 0.6; }
 
-    .cmd-echo { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 11px; }
+    .cmd-echo { display: flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 10px; }
 
     .out-blk {
-      margin: 3px 0 14px 0;
-      padding-left: 16px;
+      margin: 2px 0 12px 0;
+      padding-left: 14px;
       border-left: 2px solid var(--border2);
       color: var(--text);
     }
@@ -481,20 +483,19 @@
 
     .ascii-logo {
       color: var(--cyan);
-      font-size: 7px;
+      font-size: 5.5px;
       white-space: pre;
-      line-height: 1.3;
+      line-height: 1.2;
       opacity: 0.8;
-      margin-bottom: 8px;
-      text-shadow: 0 0 20px rgba(0,212,170,0.2);
+      margin-bottom: 6px;
     }
 
-    .divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
 
     @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
     .cursor {
       display: inline-block;
-      width: 5px; height: 11px;
+      width: 5px; height: 10px;
       background: var(--cyan);
       margin-left: 2px;
       vertical-align: text-bottom;
@@ -505,7 +506,7 @@
     .typing-cursor {
       display: inline-block;
       width: 5px;
-      height: 11px;
+      height: 10px;
       background: var(--cyan);
       margin-left: 2px;
       vertical-align: text-bottom;
@@ -520,27 +521,27 @@
       position: fixed;
       background: var(--surface2);
       border: 1px solid var(--border2);
-      border-radius: 9px;
-      padding: 6px;
+      border-radius: 8px;
+      padding: 5px;
       z-index: 9999;
-      min-width: 160px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+      min-width: 150px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       display: none;
     }
     .ctx-menu.show { display: block; }
     .ctx-item {
-      padding: 7px 12px;
-      border-radius: 5px;
-      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 10px;
       color: var(--text-dim);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: background 0.1s, color 0.1s;
+      gap: 7px;
+      transition: background 0.1s;
     }
     .ctx-item:hover { background: rgba(0,212,170,0.1); color: var(--text); }
-    .ctx-sep { height: 1px; background: var(--border); margin: 4px 0; }
+    .ctx-sep { height: 1px; background: var(--border); margin: 3px 0; }
 
     /* ============================================================
        BOOT SCREEN
@@ -554,14 +555,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       transition: opacity 0.6s ease;
+      padding: 20px;
     }
     #boot-screen.fade-out { opacity: 0; pointer-events: none; }
 
     .boot-logo {
       color: var(--cyan);
-      font-size: 7px;
+      font-size: 6px;
       white-space: pre;
       line-height: 1.3;
       opacity: 0.9;
@@ -569,10 +571,10 @@
       animation: fadeIn 0.5s ease both;
     }
 
-    .boot-sub { font-size: 11px; color: var(--text-mute); letter-spacing: 0.06em; animation: fadeIn 0.5s 0.3s ease both; }
+    .boot-sub { font-size: 10px; color: var(--text-mute); letter-spacing: 0.06em; animation: fadeIn 0.5s 0.3s ease both; }
 
     .boot-bar-wrap {
-      width: 200px;
+      width: 180px;
       height: 2px;
       background: var(--border2);
       border-radius: 2px;
@@ -587,39 +589,52 @@
       transition: width 0.05s linear;
     }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 
     /* ============================================================
-       RESPONSIVE TWEAKS
+       DESKTOP / TABLET ADJUSTMENTS
     ============================================================ */
-    @media (max-width: 600px) {
-      .desktop { padding: 12px 8px; }
-      .icon-grid { max-height: none; flex-direction: row; flex-wrap: wrap; gap: 4px; }
-      .icon { width: 65px; padding: 8px 4px; }
-      .icon-img { width: 42px; height: 42px; font-size: 22px; }
-      .icon-label { font-size: 8px; }
+    @media (min-width: 768px) {
+      .desktop { padding: 20px 16px; }
+      .icon-grid { gap: 8px; }
+      .icon { width: 76px; padding: 9px 7px; }
+      .icon-img { width: 48px; height: 48px; font-size: 26px; }
+      .icon-label { font-size: 10px; }
       
-      .taskbar { padding: 0 6px; }
-      .start-btn { padding: 4px 8px; font-size: 10px; }
-      .tb-loc { display: none; }
-      .tb-clock { font-size: 10px; }
+      .taskbar { padding: 0 12px; height: 50px; }
+      .start-btn { padding: 5px 12px; font-size: 11px; }
+      .tapp { padding: 5px 10px; font-size: 10px; }
+      .tb-loc { font-size: 9px; }
+      .tb-clock { font-size: 11px; }
       
-      .window { min-width: 250px; }
-      .win-body { padding: 12px; }
-      .win-title { font-size: 9px; }
+      .window { min-width: 350px; }
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: repeat(2, 1fr); }
+      .skill-lbl { width: 140px; }
       
-      .stat-grid, .contact-grid { grid-template-columns: 1fr; }
-      .card-grid { grid-template-columns: 1fr; }
-      .skill-lbl { width: 100px; font-size: 9px; }
-      .skill-row { gap: 6px; }
+      .about-name { font-size: 20px; }
+      .about-role { font-size: 10px; }
+      .bio-line { font-size: 11px; }
       
-      .about-name { font-size: 18px; }
-      .about-role { font-size: 9px; }
-      .bio-line { font-size: 10px; }
+      .term-out { padding: 14px 18px; font-size: 11px; }
+      .term-input { font-size: 11px; }
+      .ascii-logo { font-size: 6.5px; }
+    }
+
+    @media (min-width: 1024px) {
+      .desktop { padding: 24px 18px; }
+      .icon { width: 78px; }
+      .icon-img { width: 50px; height: 50px; font-size: 28px; }
       
-      .term-out { padding: 10px 12px; font-size: 10px; }
-      .term-input { font-size: 10px; }
-      .ascii-logo { font-size: 5.5px; }
+      .taskbar { padding: 0 18px; }
+      
+      .window { min-width: 400px; }
+      .card-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+      
+      .about-name { font-size: 22px; }
+      
+      .term-out { padding: 16px 22px; font-size: 12px; }
+      .ascii-logo { font-size: 7.5px; }
     }
   </style>
 </head>
@@ -688,7 +703,7 @@
 ============================================================ -->
 
 <!-- ABOUT -->
-<div class="window" id="win-about" style="width:560px;height:510px;left:110px;top:55px;">
+<div class="window" id="win-about" style="width:90%;max-width:500px;height:auto;max-height:80%;left:5%;top:8%;">
   <div class="win-tb" data-win="about">
     <div class="win-title-left">
       <div class="win-title">👤 about.me</div>
@@ -723,7 +738,7 @@
 </div>
 
 <!-- SKILLS -->
-<div class="window" id="win-skills" style="width:530px;height:470px;left:160px;top:75px;">
+<div class="window" id="win-skills" style="width:90%;max-width:480px;height:auto;max-height:80%;left:7%;top:10%;">
   <div class="win-tb" data-win="skills">
     <div class="win-title-left">
       <div class="win-title">⚡ skills/</div>
@@ -770,7 +785,7 @@
 </div>
 
 <!-- PROJECTS -->
-<div class="window" id="win-projects" style="width:650px;height:490px;left:200px;top:55px;">
+<div class="window" id="win-projects" style="width:92%;max-width:550px;height:auto;max-height:80%;left:4%;top:6%;">
   <div class="win-tb" data-win="projects">
     <div class="win-title-left">
       <div class="win-title">📂 projects/</div>
@@ -785,20 +800,20 @@
   <div class="win-body">
     <div class="sec-hdr">// featured projects</div>
     <div class="card-grid">
-      <div class="proj-card"><div class="proj-title">📚 Student Portal API</div><div class="proj-desc">Backend API for student management at CodeIT. Handles data, auth, and real-time interactions.</div><span class="badge g">CodeIT</span></div>
-      <div class="proj-card"><div class="proj-title">🎁 Koseli Express</div><div class="proj-desc">Full-stack gifting &amp; delivery e-commerce. Cart, payments, live order tracking.</div><span class="badge b">SudamHub</span></div>
-      <div class="proj-card"><div class="proj-title">❓ Jawaaf</div><div class="proj-desc">Community Q&amp;A and knowledge sharing platform with voting and moderation.</div><span class="badge b">SudamHub</span></div>
-      <div class="proj-card"><div class="proj-title">🍛 Dharan Kitchen</div><div class="proj-desc">Food ordering platform for local restaurants with menus and online ordering flow.</div><span class="badge b">SudamHub</span></div>
-      <div class="proj-card"><div class="proj-title">🔪 NB Khukuri</div><div class="proj-desc">Smart e-commerce for authentic Nepali khukuri products with global shipping.</div><span class="badge b">SudamHub</span></div>
-      <div class="proj-card"><div class="proj-title">🏫 CodeIT Platform</div><div class="proj-desc">IT training platform powering courses, student management, and certification flows.</div><span class="badge g">CodeIT</span></div>
+      <div class="proj-card"><div class="proj-title">📚 Student Portal API</div><div class="proj-desc">Backend API for student management at CodeIT.</div><span class="badge g">CodeIT</span></div>
+      <div class="proj-card"><div class="proj-title">🎁 Koseli Express</div><div class="proj-desc">Full-stack gifting &amp; delivery e-commerce.</div><span class="badge b">SudamHub</span></div>
+      <div class="proj-card"><div class="proj-title">❓ Jawaaf</div><div class="proj-desc">Community Q&amp;A platform with voting.</div><span class="badge b">SudamHub</span></div>
+      <div class="proj-card"><div class="proj-title">🍛 Dharan Kitchen</div><div class="proj-desc">Food ordering for local restaurants.</div><span class="badge b">SudamHub</span></div>
+      <div class="proj-card"><div class="proj-title">🔪 NB Khukuri</div><div class="proj-desc">E-commerce for authentic khukuri products.</div><span class="badge b">SudamHub</span></div>
+      <div class="proj-card"><div class="proj-title">🏫 CodeIT Platform</div><div class="proj-desc">IT training &amp; certification platform.</div><span class="badge g">CodeIT</span></div>
     </div>
-    <div style="font-size:10px;color:var(--text-mute);margin-top:10px;">50+ projects delivered across CodeIT &amp; SudamHub.</div>
+    <div style="font-size:9px;color:var(--text-mute);margin-top:8px;">50+ projects delivered across CodeIT &amp; SudamHub.</div>
   </div>
   <div class="rhandle" data-win="projects"></div>
 </div>
 
 <!-- EXPERIENCE -->
-<div class="window" id="win-experience" style="width:530px;height:430px;left:240px;top:75px;">
+<div class="window" id="win-experience" style="width:90%;max-width:480px;height:auto;max-height:75%;left:5%;top:10%;">
   <div class="win-tb" data-win="experience">
     <div class="win-title-left">
       <div class="win-title">📋 experience/</div>
@@ -817,7 +832,7 @@
       <div>
         <div class="tl-period">JAN 2022 — PRESENT</div>
         <div class="tl-title">Senior Full Stack Developer &amp; Tech Educator — CodeIT Nepal</div>
-        <div class="tl-desc">Leading web development with Laravel, Filament, Vue &amp; React. Mentoring students on real-world projects.</div>
+        <div class="tl-desc">Leading web development with Laravel, Filament, Vue &amp; React.</div>
       </div>
     </div>
     <div class="tl-item">
@@ -825,7 +840,7 @@
       <div>
         <div class="tl-period">JUL 2020 — JAN 2022</div>
         <div class="tl-title">Full Stack Developer — CodeIT Nepal</div>
-        <div class="tl-desc">Delivered 50+ projects using Laravel, Nuxt.js, and Node.js. Promoted from junior to full-time role.</div>
+        <div class="tl-desc">Delivered 50+ projects using Laravel, Nuxt.js, and Node.js.</div>
       </div>
     </div>
     <div class="tl-item">
@@ -833,10 +848,10 @@
       <div>
         <div class="tl-period">2019 — 2020</div>
         <div class="tl-title">Intern — CodeIT Nepal</div>
-        <div class="tl-desc">Intensive one-year internship mastering PHP, JavaScript, and full-stack fundamentals.</div>
+        <div class="tl-desc">Intensive one-year internship mastering full-stack fundamentals.</div>
       </div>
     </div>
-    <div style="padding:8px 12px;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.14);border-radius:6px;font-size:10px;color:var(--text-dim);margin-top:6px;">
+    <div style="padding:7px 10px;background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.14);border-radius:6px;font-size:9px;color:var(--text-dim);margin-top:5px;">
       ⚡ Also: Founder of <strong style="color:var(--cyan)">SudamHub</strong> — independent software &amp; web development services in Dharan.
     </div>
   </div>
@@ -844,7 +859,7 @@
 </div>
 
 <!-- CONTACT -->
-<div class="window" id="win-contact" style="width:490px;height:370px;left:280px;top:95px;">
+<div class="window" id="win-contact" style="width:90%;max-width:450px;height:auto;max-height:70%;left:5%;top:12%;">
   <div class="win-tb" data-win="contact">
     <div class="win-title-left">
       <div class="win-title">📬 contact.info</div>
@@ -864,15 +879,15 @@
       <div class="contact-item"><div class="contact-ico">📍</div><div><div class="contact-lbl">Location</div><div class="contact-val">Dharan-11, Sunsari, Nepal</div></div></div>
       <div class="contact-item"><div class="contact-ico">🌐</div><div><div class="contact-lbl">Website</div><div class="contact-val">sudamshrestha.com.np</div></div></div>
     </div>
-    <div style="margin-top:12px;font-size:10px;color:var(--text-mute);text-align:center;padding:8px;background:rgba(0,212,170,0.03);border-radius:6px;border:1px solid var(--border);">
-      Open for collaborations, freelance projects, and mentoring opportunities.
+    <div style="margin-top:10px;font-size:9px;color:var(--text-mute);text-align:center;padding:7px;background:rgba(0,212,170,0.03);border-radius:6px;border:1px solid var(--border);">
+      Open for collaborations, freelance projects, and mentoring.
     </div>
   </div>
   <div class="rhandle" data-win="contact"></div>
 </div>
 
 <!-- TERMINAL -->
-<div class="window" id="win-terminal" style="width:590px;height:450px;left:150px;top:75px;">
+<div class="window" id="win-terminal" style="width:94%;max-width:550px;height:auto;max-height:80%;left:3%;top:5%;">
   <div class="win-tb" data-win="terminal">
     <div class="win-title-left">
       <div class="win-title">
@@ -880,7 +895,7 @@
         <span style="color:var(--text-mute)">@sudamhub</span>
         <span style="color:var(--text-mute)">:</span>
         <span style="color:var(--blue)">~/portfolio</span>
-        <span style="background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.22);color:var(--cyan);font-size:8px;padding:1px 6px;border-radius:20px;letter-spacing:0.06em;margin-left:6px;">INTERACTIVE</span>
+        <span style="background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.22);color:var(--cyan);font-size:7px;padding:1px 5px;border-radius:20px;margin-left:5px;">INTERACTIVE</span>
       </div>
     </div>
     <div class="win-title-spacer"></div>
@@ -896,21 +911,21 @@
  █████   ██    ██ ██   ██ ███████ ██ ████ ██
      ██  ██    ██ ██   ██ ██   ██ ██  ██  ██
 ██████    ██████  ██████  ██   ██ ██      ██</div>
-    <div style="font-size:10px;color:var(--text-mute);line-height:2;">
+    <div style="font-size:9px;color:var(--text-mute);line-height:1.8;">
       <span style="color:var(--cyan-dim)">OS&nbsp;&nbsp;</span> SudamOS v2026.1 &nbsp;&nbsp;
-      <span style="color:var(--cyan-dim)">HOST</span> sudamhub.com &nbsp;&nbsp;
+      <span style="color:var(--cyan-dim)">HOST</span> sudamhub.com<br>
       <span style="color:var(--cyan-dim)">SHELL</span> zsh 5.9 &nbsp;&nbsp;
       <span style="color:var(--cyan-dim)">LOC&nbsp;</span> Dharan, Nepal
     </div>
     <hr class="divider">
-    <div style="font-size:11px;color:var(--text-dim);">System ready. Type <span style="color:var(--cyan)">help</span> to list all commands.</div>
-    <div style="font-size:10px;color:var(--text-mute);">Try: <span style="color:var(--cyan)">about</span> · <span style="color:var(--cyan)">skills</span> · <span style="color:var(--cyan)">projects</span> · <span style="color:var(--cyan)">contact</span> · <span style="color:var(--cyan)">open [name]</span></div>
+    <div style="font-size:10px;color:var(--text-dim);">System ready. Type <span style="color:var(--cyan)">help</span> for commands.</div>
+    <div style="font-size:9px;color:var(--text-mute);">Try: <span style="color:var(--cyan)">about</span> · <span style="color:var(--cyan)">skills</span> · <span style="color:var(--cyan)">contact</span></div>
     <hr class="divider">
   </div>
   <div class="term-input-row">
-    <span style="color:var(--green);font-size:11px;">sudam</span><span style="color:var(--text-mute);font-size:11px;">@sudamhub</span>
-    <span style="color:var(--cyan);margin:0 5px;font-size:11px;">›</span>
-    <input type="text" class="term-input" id="termInput" placeholder="type a command…" autocomplete="off" spellcheck="false">
+    <span style="color:var(--green);font-size:10px;">sudam</span><span style="color:var(--text-mute);font-size:10px;">@sudamhub</span>
+    <span style="color:var(--cyan);margin:0 4px;font-size:10px;">›</span>
+    <input type="text" class="term-input" id="termInput" placeholder="type command…" autocomplete="off" spellcheck="false">
     <span class="cursor"></span>
   </div>
   <div class="rhandle" data-win="terminal"></div>
@@ -921,23 +936,23 @@
 ============================================================ -->
 <div class="taskbar">
   <button class="start-btn" onclick="toggleAllWindows()">
-    <span style="font-size:14px;line-height:1;">⬡</span> SudamOS
+    <span style="font-size:13px;line-height:1;">⬡</span> SudamOS
   </button>
   <div class="taskbar-sep"></div>
   <div class="taskbar-apps" id="taskbarApps"></div>
   <div class="taskbar-right">
-    <span class="tb-loc">Dharan, Nepal 🇳🇵</span>
+    <span class="tb-loc">Dharan 🇳🇵</span>
     <span class="tb-clock" id="tbClock">--:--</span>
   </div>
 </div>
 
 <!-- CONTEXT MENU -->
 <div class="ctx-menu" id="ctxMenu">
-  <div class="ctx-item" onclick="openAllWindows()">🗂 Open all folders</div>
-  <div class="ctx-item" onclick="closeAllWindows()">✕ Close all windows</div>
+  <div class="ctx-item" onclick="openAllWindows()">🗂 Open all</div>
+  <div class="ctx-item" onclick="closeAllWindows()">✕ Close all</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item" onclick="openWin('terminal')">🖥 Open terminal</div>
-  <div class="ctx-item" onclick="openWin('about')">👤 About Sudam</div>
+  <div class="ctx-item" onclick="openWin('terminal')">🖥 Terminal</div>
+  <div class="ctx-item" onclick="openWin('about')">👤 About</div>
   <div class="ctx-sep"></div>
   <div class="ctx-item" style="color:var(--text-mute);cursor:default;">SudamOS v2026.1</div>
 </div>
@@ -971,17 +986,26 @@
 
   const WIN_IDS = ['about','skills','projects','experience','contact','terminal'];
   const WIN_LABELS = {
-    about: '👤 about.me',
-    skills: '⚡ skills/',
-    projects: '📂 projects/',
-    experience: '📋 experience/',
-    contact: '📬 contact.info',
-    terminal: '🖥 terminal.sh'
+    about: '👤 about',
+    skills: '⚡ skills',
+    projects: '📂 projects',
+    experience: '📋 exp',
+    contact: '📬 contact',
+    terminal: '🖥 term'
   };
 
   window.openWin = function(id) {
     const w = document.getElementById('win-' + id);
     if (!w) return;
+    
+    // Reset position for mobile if needed
+    if (window.innerWidth < 768) {
+      if (!w.style.left || w.style.left === '0px') {
+        w.style.left = '5%';
+        w.style.top = '10%';
+      }
+    }
+    
     w.classList.add('open');
     w.style.display = 'flex';
     winstates[id] = { open: true, minimized: false };
@@ -1030,13 +1054,13 @@
     
     if (w.dataset.maximized === '1') {
       const s = preMaxSize[id];
-      if (s) { w.style.width=s.w; w.style.height=s.h; w.style.left=s.l; w.style.top=s.t; }
+      if (s) { w.style.width = s.w; w.style.height = s.h; w.style.left = s.l; w.style.top = s.t; }
       w.dataset.maximized = '0';
     } else {
       preMaxSize[id] = { w: w.style.width, h: w.style.height, l: w.style.left, t: w.style.top };
       w.style.left = '0'; w.style.top = '0';
       w.style.width = window.innerWidth + 'px';
-      w.style.height = (window.innerHeight - 52) + 'px';
+      w.style.height = (window.innerHeight - 48) + 'px';
       w.dataset.maximized = '1';
     }
     bringFront(id);
@@ -1078,50 +1102,93 @@
     anyOpen ? closeAllWindows() : openWin('about'); 
   };
 
-  /* ---------- DRAG ---------- */
+  /* ---------- DRAG (Mouse + Touch) ---------- */
   let drag = null;
-  document.querySelectorAll('.win-tb').forEach(tb => {
-    tb.addEventListener('mousedown', e => {
-      if (e.target.closest('.win-controls')) return;
-      const w = tb.parentElement;
-      const id = w.id.replace('win-', '');
-      bringFront(id);
-      drag = { el: w, ox: e.clientX - w.offsetLeft, oy: e.clientY - w.offsetTop };
-      w.style.transition = 'none';
-    });
-  });
-  document.addEventListener('mousemove', e => {
+  
+  function startDrag(e, tb) {
+    if (e.target.closest('.win-controls')) return;
+    e.preventDefault();
+    const w = tb.parentElement;
+    const id = w.id.replace('win-', '');
+    bringFront(id);
+    
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    
+    drag = { 
+      el: w, 
+      ox: clientX - w.offsetLeft, 
+      oy: clientY - w.offsetTop 
+    };
+    w.style.transition = 'none';
+  }
+  
+  function onDragMove(e) {
     if (!drag) return;
-    let nx = e.clientX - drag.ox;
-    let ny = e.clientY - drag.oy;
+    e.preventDefault();
+    
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    
+    let nx = clientX - drag.ox;
+    let ny = clientY - drag.oy;
     nx = Math.max(0, Math.min(window.innerWidth - drag.el.offsetWidth, nx));
-    ny = Math.max(0, Math.min(window.innerHeight - 52 - drag.el.offsetHeight, ny));
+    ny = Math.max(0, Math.min(window.innerHeight - 48 - drag.el.offsetHeight, ny));
     drag.el.style.left = nx + 'px';
     drag.el.style.top = ny + 'px';
+  }
+  
+  function stopDrag() { drag = null; }
+  
+  document.querySelectorAll('.win-tb').forEach(tb => {
+    tb.addEventListener('mousedown', e => startDrag(e, tb));
+    tb.addEventListener('touchstart', e => startDrag(e, tb), {passive: false});
   });
-  document.addEventListener('mouseup', () => { drag = null; });
+  
+  document.addEventListener('mousemove', onDragMove);
+  document.addEventListener('touchmove', onDragMove, {passive: false});
+  document.addEventListener('mouseup', stopDrag);
+  document.addEventListener('touchend', stopDrag);
 
-  /* ---------- RESIZE ---------- */
+  /* ---------- RESIZE (Mouse + Touch) ---------- */
   let resz = null;
-  document.querySelectorAll('.rhandle').forEach(h => {
-    h.addEventListener('mousedown', e => {
-      e.stopPropagation();
-      const w = document.getElementById('win-' + h.dataset.win);
-      resz = { el: w, ox: e.clientX, oy: e.clientY, ow: w.offsetWidth, oh: w.offsetHeight };
-    });
-  });
-  document.addEventListener('mousemove', e => {
+  
+  function startResize(e, h) {
+    e.stopPropagation();
+    e.preventDefault();
+    const w = document.getElementById('win-' + h.dataset.win);
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    resz = { el: w, ox: clientX, oy: clientY, ow: w.offsetWidth, oh: w.offsetHeight };
+  }
+  
+  function onResizeMove(e) {
     if (!resz) return;
-    const newWidth = Math.max(280, resz.ow + (e.clientX - resz.ox));
-    const newHeight = Math.max(200, resz.oh + (e.clientY - resz.oy));
+    e.preventDefault();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    const newWidth = Math.max(260, resz.ow + (clientX - resz.ox));
+    const newHeight = Math.max(180, resz.oh + (clientY - resz.oy));
     resz.el.style.width = Math.min(newWidth, window.innerWidth) + 'px';
-    resz.el.style.height = Math.min(newHeight, window.innerHeight - 52) + 'px';
+    resz.el.style.height = Math.min(newHeight, window.innerHeight - 48) + 'px';
+  }
+  
+  function stopResize() { resz = null; }
+  
+  document.querySelectorAll('.rhandle').forEach(h => {
+    h.addEventListener('mousedown', e => startResize(e, h));
+    h.addEventListener('touchstart', e => startResize(e, h), {passive: false});
   });
-  document.addEventListener('mouseup', () => { resz = null; });
+  
+  document.addEventListener('mousemove', onResizeMove);
+  document.addEventListener('touchmove', onResizeMove, {passive: false});
+  document.addEventListener('mouseup', stopResize);
+  document.addEventListener('touchend', stopResize);
 
   /* ---------- FOCUS ON CLICK ---------- */
   document.querySelectorAll('.window').forEach(w => {
     w.addEventListener('mousedown', () => bringFront(w.id.replace('win-', '')));
+    w.addEventListener('touchstart', () => bringFront(w.id.replace('win-', '')), {passive: true});
   });
 
   /* ---------- SKILL BARS ---------- */
@@ -1145,12 +1212,12 @@
   const ctx = document.getElementById('ctxMenu');
   document.getElementById('desktop').addEventListener('contextmenu', e => {
     e.preventDefault();
-    ctx.style.left = Math.min(e.clientX, window.innerWidth - 180) + 'px';
-    ctx.style.top = Math.min(e.clientY, window.innerHeight - 200) + 'px';
+    ctx.style.left = Math.min(e.clientX, window.innerWidth - 160) + 'px';
+    ctx.style.top = Math.min(e.clientY, window.innerHeight - 180) + 'px';
     ctx.classList.add('show');
   });
   document.addEventListener('click', () => ctx.classList.remove('show'));
-  document.addEventListener('contextmenu', e => { if (!e.target.closest('#desktop')) e.preventDefault(); });
+  document.addEventListener('touchstart', () => ctx.classList.remove('show'), {passive: true});
 
   /* ---------- CLOCK ---------- */
   function tick() { document.getElementById('tbClock').textContent = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
@@ -1163,7 +1230,6 @@
   let typingInterval = null;
   let currentTypingElement = null;
   let currentTypingText = '';
-  let currentTypingIndex = 0;
   let currentTypingCursor = null;
 
   function stopTyping() {
@@ -1172,7 +1238,6 @@
       typingInterval = null;
     }
     if (currentTypingElement) {
-      // Complete the text immediately
       currentTypingElement.innerHTML = currentTypingText;
     }
     if (currentTypingCursor) {
@@ -1185,26 +1250,18 @@
     termInput.focus();
   }
 
-  function typeText(element, htmlContent, speed = 12) {
+  function typeText(element, htmlContent, speed = 10) {
     stopTyping();
     
     isTyping = true;
     currentTypingElement = element;
     currentTypingText = htmlContent;
-    currentTypingIndex = 0;
     termInput.disabled = true;
     
-    // Clear element
     element.innerHTML = '';
-    
-    // Create cursor
     currentTypingCursor = document.createElement('span');
     currentTypingCursor.className = 'typing-cursor';
     element.appendChild(currentTypingCursor);
-    
-    // Simple character-by-character typing with HTML preservation
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
     
     let charIndex = 0;
     let htmlString = htmlContent;
@@ -1212,9 +1269,7 @@
     
     typingInterval = setInterval(() => {
       if (charIndex < htmlString.length) {
-        // Handle HTML tags properly - skip them as whole units
         if (htmlString[charIndex] === '<') {
-          // Find closing '>'
           const closeIndex = htmlString.indexOf('>', charIndex);
           if (closeIndex !== -1) {
             currentHTML = htmlString.substring(0, closeIndex + 1);
@@ -1228,16 +1283,13 @@
           charIndex++;
         }
         
-        // Update content while preserving cursor
         const cursor = currentTypingCursor;
         element.innerHTML = currentHTML;
         element.appendChild(cursor);
         
-        // Scroll to bottom
         const to = document.getElementById('termOut');
         to.scrollTop = to.scrollHeight;
       } else {
-        // Typing complete
         clearInterval(typingInterval);
         typingInterval = null;
         if (currentTypingCursor) {
@@ -1252,87 +1304,59 @@
     }, speed);
   }
 
-  // Terminal commands
   const TCMDS = {
-    help: () => `<div style="font-size:10px;color:var(--text-mute);margin-bottom:8px;">// available commands</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:10px;">
-  <div><span style="color:var(--cyan)">about</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Display bio & profile</span></div>
-  <div><span style="color:var(--cyan)">skills</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Show tech stack</span></div>
-  <div><span style="color:var(--cyan)">projects</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">List projects</span></div>
-  <div><span style="color:var(--cyan)">experience</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Work timeline</span></div>
-  <div><span style="color:var(--cyan)">contact</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Contact details</span></div>
-  <div><span style="color:var(--cyan)">open [name]</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Open a window</span></div>
-  <div><span style="color:var(--cyan)">ls</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">List files</span></div>
-  <div><span style="color:var(--cyan)">tree</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Directory tree</span></div>
-  <div><span style="color:var(--cyan)">whoami</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Who is this guy?</span></div>
-  <div><span style="color:var(--cyan)">sudo</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">???</span></div>
-  <div><span style="color:var(--cyan)">pwd</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Current path</span></div>
-  <div><span style="color:var(--cyan)">clear</span><span style="color:var(--text-mute)"> → </span><span style="color:var(--text-dim)">Clear terminal</span></div>
+    help: () => `<div style="font-size:9px;color:var(--text-mute);margin-bottom:6px;">// commands</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;font-size:9px;">
+  <div><span style="color:var(--cyan)">about</span> <span style="color:var(--text-dim)">Bio</span></div>
+  <div><span style="color:var(--cyan)">skills</span> <span style="color:var(--text-dim)">Tech</span></div>
+  <div><span style="color:var(--cyan)">projects</span> <span style="color:var(--text-dim)">Work</span></div>
+  <div><span style="color:var(--cyan)">contact</span> <span style="color:var(--text-dim)">Info</span></div>
+  <div><span style="color:var(--cyan)">clear</span> <span style="color:var(--text-dim)">Clear</span></div>
+  <div><span style="color:var(--cyan)">open [x]</span> <span style="color:var(--text-dim)">Window</span></div>
 </div>`,
-    about: () => `<span style="color:var(--cyan);font-size:13px;">Sudam Shrestha</span>
-<span style="color:var(--text-dim);font-size:10px;">Senior Full Stack Developer & Tech Educator</span>
+    about: () => `<span style="color:var(--cyan);font-size:12px;">Sudam Shrestha</span>
+<span style="color:var(--text-dim);">Senior Full Stack Developer</span>
 
-<span style="color:var(--cyan);">▸</span> 6+ years building scalable web apps — Laravel, Filament, Vue/Nuxt, React & Node.js
-<span style="color:var(--cyan);">▸</span> Tech Educator at CodeIT Nepal — mentoring developers in Dharan
-<span style="color:var(--cyan);">▸</span> Founder of SudamHub — independent web & software solutions
-<span style="color:var(--cyan);">▸</span> <span style="color:var(--text-mute);">📍 Dharan-11, Sunsari, Nepal 🇳🇵</span>
+<span style="color:var(--cyan);">▸</span> 6+ years Laravel, Vue, React, Node
+<span style="color:var(--cyan);">▸</span> Tech Educator at CodeIT Nepal
+<span style="color:var(--cyan);">▸</span> Founder of SudamHub
+<span style="color:var(--cyan);">▸</span> 📍 Dharan, Nepal
 
-<span style="color:var(--cyan-dim);">Motto:</span> "Clean code, real impact, scalable systems."`,
-    skills: () => `<span style="color:var(--cyan);font-size:13px;">Tech Stack & Proficiency</span>
+<span style="color:var(--cyan-dim);">Motto:</span> "Clean code, real impact."`,
+    skills: () => `<span style="color:var(--cyan);font-size:12px;">Tech Stack</span>
 
-<span style="color:var(--cyan);">▸</span> Laravel / Filament — 95%
-<span style="color:var(--cyan);">▸</span> TailwindCSS — 92%
-<span style="color:var(--cyan);">▸</span> Vue.js / Nuxt.js — 90%
-<span style="color:var(--cyan);">▸</span> REST / GraphQL APIs — 90%
-<span style="color:var(--cyan);">▸</span> React / Next.js — 88%
-<span style="color:var(--cyan);">▸</span> MySQL / PostgreSQL — 88%
+<span style="color:var(--cyan);">▸</span> Laravel/Filament — 95%
+<span style="color:var(--cyan);">▸</span> Vue/Nuxt — 90%
+<span style="color:var(--cyan);">▸</span> React/Next — 88%
 <span style="color:var(--cyan);">▸</span> Node.js — 85%
-<span style="color:var(--cyan);">▸</span> Docker / CI-CD — 80%`,
-    projects: () => `<span style="color:var(--cyan);font-size:13px;">Featured Projects</span>
+<span style="color:var(--cyan);">▸</span> Tailwind — 92%
+<span style="color:var(--cyan);">▸</span> MySQL/PG — 88%`,
+    projects: () => `<span style="color:var(--cyan);font-size:12px;">Projects</span>
 
-<span style="color:var(--cyan);">📚</span> Student Portal API — Backend API for CodeIT student management
-<span style="color:var(--cyan);">🎁</span> Koseli Express — Full-stack gifting e-commerce platform
-<span style="color:var(--cyan);">❓</span> Jawaaf — Community Q&A platform with voting
-<span style="color:var(--cyan);">🍛</span> Dharan Kitchen — Food ordering for local restaurants
-<span style="color:var(--cyan);">🔪</span> NB Khukuri — E-commerce for authentic khukuri products
-<span style="color:var(--cyan);">🏫</span> CodeIT Platform — IT training & certification platform`,
-    experience: () => `<span style="color:var(--cyan);font-size:13px;">Work Timeline</span>
+<span style="color:var(--cyan);">📚</span> Student Portal API
+<span style="color:var(--cyan);">🎁</span> Koseli Express
+<span style="color:var(--cyan);">❓</span> Jawaaf Q&A
+<span style="color:var(--cyan);">🍛</span> Dharan Kitchen
+<span style="color:var(--cyan);">🏫</span> CodeIT Platform`,
+    experience: () => `<span style="color:var(--cyan);font-size:12px;">Experience</span>
 
-<span style="color:var(--cyan);">▸</span> JAN 2022 — PRESENT
-  Senior Full Stack Developer & Tech Educator — CodeIT Nepal
-
-<span style="color:var(--cyan);">▸</span> JUL 2020 — JAN 2022
-  Full Stack Developer — CodeIT Nepal
-
-<span style="color:var(--cyan);">▸</span> 2019 — 2020
-  Intern — CodeIT Nepal`,
-    contact: () => `<span style="color:var(--cyan);font-size:13px;">Contact Information</span>
+<span style="color:var(--cyan);">▸</span> 2022-Present: Senior Dev @ CodeIT
+<span style="color:var(--cyan);">▸</span> 2020-2022: Full Stack @ CodeIT
+<span style="color:var(--cyan);">▸</span> 2019-2020: Intern @ CodeIT`,
+    contact: () => `<span style="color:var(--cyan);font-size:12px;">Contact</span>
 
 <span style="color:var(--cyan);">📧</span> sudamshrestha939@gmail.com
 <span style="color:var(--cyan);">📱</span> +977 9704508525
-<span style="color:var(--cyan);">📍</span> Dharan-11, Sunsari, Nepal
-<span style="color:var(--cyan);">🌐</span> sudamshrestha.com.np`,
-    whoami: () => `<span style="color:var(--cyan);">sudam</span> — Senior Full Stack Developer & Tech Educator<br><span style="color:var(--text-mute);">CodeIT Nepal · SudamHub Founder · Dharan, Nepal</span>`,
+<span style="color:var(--cyan);">📍</span> Dharan-11, Nepal`,
+    whoami: () => `<span style="color:var(--cyan);">sudam</span> — Senior Full Stack Developer<br><span style="color:var(--text-mute);">CodeIT Nepal · SudamHub Founder</span>`,
     ls: () => `<span style="color:var(--cyan);">~/sudam/</span>
-<span style="color:var(--blue);">drwxr-xr-x</span> <span style="color:var(--text);">📄 about.me</span>      <span style="color:var(--text-mute);">Senior Full Stack · SudamHub Founder</span>
-<span style="color:var(--blue);">drwxr-xr-x</span> <span style="color:var(--text);">📂 skills/</span>       <span style="color:var(--text-mute);">Laravel · Vue · React · Node · Tailwind</span>
-<span style="color:var(--blue);">drwxr-xr-x</span> <span style="color:var(--text);">📂 projects/</span>     <span style="color:var(--text-mute);">50+ delivered · CodeIT + SudamHub</span>
-<span style="color:var(--blue);">drwxr-xr-x</span> <span style="color:var(--text);">📂 experience/</span>   <span style="color:var(--text-mute);">6+ years · CodeIT Nepal</span>
-<span style="color:var(--blue);">drwxr-xr-x</span> <span style="color:var(--text);">📞 contact.info</span>  <span style="color:var(--text-mute);">Dharan-11, Nepal</span>`,
-    tree: () => `<span style="color:var(--cyan);">~/sudam/</span>
-├── <span style="color:var(--text);">📄 about.me</span><span style="color:var(--text-mute);">      — Senior Full Stack · SudamHub Founder</span>
-├── <span style="color:var(--text);">📂 skills/</span><span style="color:var(--text-mute);">       — Laravel · Vue · React · Node · Tailwind</span>
-├── <span style="color:var(--text);">📂 projects/</span><span style="color:var(--text-mute);">     — 50+ delivered · CodeIT + SudamHub</span>
-├── <span style="color:var(--text);">📂 experience/</span><span style="color:var(--text-mute);">   — 6+ years · CodeIT Nepal</span>
-└── <span style="color:var(--text);">📞 contact.info</span><span style="color:var(--text-mute);">  — Dharan-11, Nepal</span>
-
-<span style="color:var(--text-mute);">5 entries · last modified 2026</span>`,
-    sudo: () => `<span style="color:var(--orange);">[sudo] password for sudam: ••••••••••</span>
-<span style="color:var(--green);">Access granted.</span> Secret: "Build real projects. Mentor others. Keep shipping." 🚀`,
+<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📄 about.me</span>
+<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📂 skills/</span>
+<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📂 projects/</span>
+<span style="color:var(--blue);">drwx</span> <span style="color:var(--text);">📞 contact.info</span>`,
     pwd: () => `<span style="color:var(--text-dim);">/home/sudam/portfolio</span>`,
-    date: () => `<span style="color:var(--text-dim);">${new Date().toString()}</span>`,
-    uname: () => `<span style="color:var(--text-dim);">SudamOS v2026.1 — zsh 5.9 — Dharan, Nepal</span>`,
-    uptime: () => `<span style="color:var(--text-dim);">up ∞ days, brewing coffee, shipping code</span>`,
+    clear: () => '',
+    sudo: () => `<span style="color:var(--orange);">[sudo] password: ••••••</span><br><span style="color:var(--green);">Access granted.</span> 🚀`,
   };
 
   const termOut = document.getElementById('termOut');
@@ -1340,16 +1364,14 @@
   let tHistory = [], tIdx = 0;
 
   function termExec(raw) {
-    if (isTyping) {
-      stopTyping();
-    }
+    if (isTyping) stopTyping();
     
     const val = raw.trim();
     if (!val) return;
     
     const echo = document.createElement('div');
     echo.className = 'cmd-echo';
-    echo.innerHTML = `<span style="color:var(--green)">sudam</span><span style="color:var(--text-mute)">@sudamhub</span><span style="color:var(--cyan);margin:0 5px">›</span><span style="color:var(--text)">${ESC(val)}</span>`;
+    echo.innerHTML = `<span style="color:var(--green)">sudam</span><span style="color:var(--text-mute)">@sudamhub</span><span style="color:var(--cyan);">›</span> <span style="color:var(--text)">${ESC(val)}</span>`;
     termOut.appendChild(echo);
     tHistory.push(val);
     tIdx = tHistory.length;
@@ -1359,7 +1381,7 @@
     const arg = parts[1];
 
     if (cmd === 'clear') {
-      termOut.innerHTML = '<div style="font-size:11px;color:var(--text-dim);">Terminal cleared. Type <span style="color:var(--cyan)">help</span> for commands.</div>';
+      termOut.innerHTML = '<div style="font-size:10px;color:var(--text-dim);">Cleared. Type <span style="color:var(--cyan)">help</span>.</div>';
       return;
     }
 
@@ -1369,38 +1391,28 @@
     if (cmd === 'open' && arg) {
       if (WIN_IDS.includes(arg)) {
         openWin(arg);
-        blk.innerHTML = `<span style="color:var(--green)">✓ Opening ${arg} window…</span>`;
-        termOut.appendChild(blk);
+        blk.innerHTML = `<span style="color:var(--green)">✓ Opened ${arg}</span>`;
       } else {
-        blk.innerHTML = `<span style="color:var(--red)">open: ${ESC(arg)}: no such file or directory</span>`;
+        blk.innerHTML = `<span style="color:var(--red)">open: ${ESC(arg)} not found</span>`;
         blk.classList.add('err');
-        termOut.appendChild(blk);
       }
-      const to = document.getElementById('termOut');
-      to.scrollTop = to.scrollHeight;
+      termOut.appendChild(blk);
+      termOut.scrollTop = termOut.scrollHeight;
     } else if (TCMDS[cmd]) {
       const output = TCMDS[cmd]();
       termOut.appendChild(blk);
-      const to = document.getElementById('termOut');
-      to.scrollTop = to.scrollHeight;
-      
-      // Start typing effect
-      typeText(blk, output, 10);
+      termOut.scrollTop = termOut.scrollHeight;
+      if (output) typeText(blk, output, 8);
     } else {
-      blk.innerHTML = `<span style="color:var(--red)">bash: ${ESC(cmd)}: command not found</span> — type <span style="color:var(--cyan)">help</span>`;
+      blk.innerHTML = `<span style="color:var(--red)">bash: ${ESC(cmd)} not found</span>`;
       blk.classList.add('err');
       termOut.appendChild(blk);
-      const to = document.getElementById('termOut');
-      to.scrollTop = to.scrollHeight;
+      termOut.scrollTop = termOut.scrollHeight;
     }
   }
 
   termInput.addEventListener('keydown', e => {
-    if (isTyping) {
-      e.preventDefault();
-      return;
-    }
-    
+    if (isTyping) { e.preventDefault(); return; }
     if (e.key === 'Enter') {
       const v = termInput.value;
       termInput.value = '';
@@ -1416,10 +1428,13 @@
   });
 
   document.getElementById('win-terminal').addEventListener('click', () => {
-    if (!isTyping) {
-      termInput.focus();
-    }
+    if (!isTyping) termInput.focus();
   });
+
+  // Prevent default touch behaviors on desktop
+  document.getElementById('desktop').addEventListener('touchstart', e => {
+    if (e.target.closest('.icon')) return;
+  }, {passive: false});
 
 })();
 </script>
