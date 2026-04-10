@@ -54,6 +54,42 @@
    pointer-events: none;
  }
 
+ .tech-notes-bg {
+   position: absolute;
+   top: 50%;
+   right: 40px;
+   transform: translateY(-50%);
+   z-index: 0;
+   pointer-events: none;
+   font-family: var(--font);
+   opacity: 0.35;
+   color: var(--text-dim);
+   font-size: 11px;
+   line-height: 1.6;
+   max-width: 380px;
+ }
+
+ @media (max-width: 768px) {
+   .tech-notes-bg {
+     display: none;
+   }
+ }
+
+ .tn-header {
+   color: var(--text-mute);
+   margin-bottom: 15px;
+   font-size: 10px;
+   letter-spacing: 0.1em;
+   text-transform: uppercase;
+ }
+
+ .tn-comment { color: var(--text-mute); font-style: italic; }
+ .tn-keyword { color: var(--purple); }
+ .tn-var { color: var(--text); }
+ .tn-operator { color: var(--cyan-dim); }
+ .tn-string { color: var(--green); }
+ .tn-method { color: var(--blue); }
+
  .desktop {
    position: fixed;
    inset: 0;
