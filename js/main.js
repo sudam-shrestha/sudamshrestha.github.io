@@ -21,21 +21,36 @@
   const WIN_IDS = ['about','skills','projects','experience','contact','terminal'];
   const WIN_LABELS = { about:'👤 about', skills:'⚡ skills', projects:'📂 projects', experience:'📋 exp', contact:'📬 contact', terminal:'🖥 term' };
 
-  window.openWin = function(id) {
-    const w = document.getElementById('win-' + id);
-    if (!w) return;
-    if (window.innerWidth < 768) {
-      if (!w.style.left || w.style.left === '0px') { w.style.left = '5%'; w.style.top = '10%'; }
+window.openWin = function(id) {
+  const w = document.getElementById('win-' + id);
+  if (!w) return;
+  
+  if (window.innerWidth < 768) {
+    if (!w.style.left || w.style.left === '0px' || w.dataset.maximized === '1') {
+      w.style.left = '5%';
+      w.style.top = '10%';
+      w.style.width = '90%';
+      w.style.maxWidth = '500px';
+      w.style.height = 'auto';
+      w.style.maxHeight = '80%';
     }
-    w.classList.add('open');
-    w.style.display = 'flex';
-    w.removeAttribute('aria-hidden');
-    winstates[id] = { open: true, minimized: false };
-    bringFront(id);
-    updateTaskbar();
-    if (id === 'skills') setTimeout(animateBars, 200);
-    if (id === 'terminal') setTimeout(() => document.getElementById('termInput').focus(), 80);
-  };
+  }
+  
+  // Reset maximized state on mobile when opening
+  if (window.innerWidth < 768 && w.dataset.maximized === '1') {
+    w.dataset.maximized = '0';
+    enableResize(id);
+  }
+  
+  w.classList.add('open');
+  w.style.display = 'flex';
+  w.removeAttribute('aria-hidden');
+  winstates[id] = { open: true, minimized: false };
+  bringFront(id);
+  updateTaskbar();
+  if (id === 'skills') setTimeout(animateBars, 200);
+  if (id === 'terminal') setTimeout(() => document.getElementById('termInput').focus(), 80);
+};
 
   window.closeWin = function(id) {
     const w = document.getElementById('win-' + id);
@@ -58,24 +73,91 @@
     updateTaskbar();
   };
 
-  const preMaxSize = {};
-  window.maxWin = function(id) {
-    const w = document.getElementById('win-' + id);
-    if (!winstates[id]) { winstates[id] = { open: true, minimized: false }; }
-    if (w.dataset.maximized === '1') {
-      const s = preMaxSize[id];
-      if (s) { w.style.width = s.w; w.style.height = s.h; w.style.left = s.l; w.style.top = s.t; }
-      w.dataset.maximized = '0';
-    } else {
-      preMaxSize[id] = { w: w.style.width, h: w.style.height, l: w.style.left, t: w.style.top };
-      w.style.left = '0'; w.style.top = '0';
-      w.style.width = window.innerWidth + 'px';
-      w.style.height = (window.innerHeight - 48) + 'px';
-      w.dataset.maximized = '1';
-    }
-    bringFront(id);
-  };
+  /* Replace the maxWin function and preMaxSize with this fixed version */
 
+const preMaxSize = {};
+window.maxWin = function(id) {
+  const w = document.getElementById('win-' + id);
+  
+  if (!winstates[id]) {
+    winstates[id] = { open: true, minimized: false };
+  }
+  
+  if (w.dataset.maximized === '1') {
+    // Restore to previous size
+    const s = preMaxSize[id];
+    if (s) {
+      w.style.width = s.w;
+      w.style.height = s.h;
+      w.style.left = s.l;
+      w.style.top = s.t;
+      w.style.maxWidth = s.mw || 'none';
+      w.style.maxHeight = s.mh || 'none';
+    }
+    w.dataset.maximized = '0';
+    // Update resize handle functionality
+    enableResize(id);
+  } else {
+    // Store current dimensions before maximizing
+    const computedStyle = window.getComputedStyle(w);
+    preMaxSize[id] = {
+      w: w.style.width || computedStyle.width,
+      h: w.style.height || computedStyle.height,
+      l: w.style.left || computedStyle.left,
+      t: w.style.top || computedStyle.top,
+      mw: w.style.maxWidth,
+      mh: w.style.maxHeight
+    };
+    
+    // Maximize
+    w.style.left = '0';
+    w.style.top = '0';
+    w.style.width = window.innerWidth + 'px';
+    w.style.height = (window.innerHeight - 48) + 'px';
+    w.style.maxWidth = 'none';
+    w.style.maxHeight = 'none';
+    w.dataset.maximized = '1';
+    
+    // Disable resize when maximized
+    disableResize(id);
+  }
+  bringFront(id);
+};
+
+// Helper functions to manage resize handle when maximized
+function disableResize(id) {
+  const w = document.getElementById('win-' + id);
+  const rhandle = w.querySelector('.rhandle');
+  if (rhandle) {
+    rhandle.style.pointerEvents = 'none';
+    rhandle.style.opacity = '0.3';
+  }
+}
+
+function enableResize(id) {
+  const w = document.getElementById('win-' + id);
+  const rhandle = w.querySelector('.rhandle');
+  if (rhandle) {
+    rhandle.style.pointerEvents = 'auto';
+    rhandle.style.opacity = '1';
+  }
+}
+
+// Also update the resize function to respect maximized state
+function onResizeMove(e) {
+  if (!resz) return;
+  
+  // Don't allow resize if window is maximized
+  if (resz.el.dataset.maximized === '1') return;
+  
+  e.preventDefault();
+  const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+  const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+  const newWidth = Math.max(260, resz.ow + (clientX - resz.ox));
+  const newHeight = Math.max(180, resz.oh + (clientY - resz.oy));
+  resz.el.style.width = Math.min(newWidth, window.innerWidth) + 'px';
+  resz.el.style.height = Math.min(newHeight, window.innerHeight - 48) + 'px';
+}
   function bringFront(id) { zTop++; const w = document.getElementById('win-' + id); if (w) w.style.zIndex = zTop; }
 
   function updateTaskbar() {
