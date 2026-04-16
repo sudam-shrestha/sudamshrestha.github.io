@@ -1,4 +1,4 @@
- *,
+*,
  *::before,
  *::after {
    margin: 0;
@@ -42,7 +42,21 @@
    position: fixed;
    inset: 0;
    z-index: 0;
-   background: radial-gradient(ellipse at 15% 40%, rgba(0, 212, 170, 0.05) 0%, transparent 55%), radial-gradient(ellipse at 85% 15%, rgba(77, 159, 255, 0.05) 0%, transparent 55%), radial-gradient(ellipse at 50% 90%, rgba(176, 125, 255, 0.03) 0%, transparent 50%), var(--bg);
+   background-image: url('/images/sudam.png');
+   background-size: contain;
+   background-position: center ;
+   background-repeat: no-repeat;
+ }
+
+ .wallpaper::after {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background:
+     radial-gradient(ellipse at 15% 40%, rgba(0, 212, 170, 0.05) 0%, transparent 55%),
+     radial-gradient(ellipse at 85% 15%, rgba(77, 159, 255, 0.05) 0%, transparent 55%),
+     radial-gradient(ellipse at 50% 90%, rgba(176, 125, 255, 0.03) 0%, transparent 50%),
+     rgba(8, 11, 20, 0.82);
  }
 
  .grid-overlay {
@@ -578,7 +592,20 @@
    border: 1px solid var(--border2);
    border-radius: 7px;
    padding: 10px 12px;
-   cursor: default;
+   cursor: pointer;
+   transition: transform 0.2s ease, border-color 0.2s ease;
+ }
+
+ .proj-card:hover {
+   transform: translateY(-2px);
+   border-color: var(--cyan);
+ }
+
+ .proj-card a {
+   cursor: pointer;
+   text-decoration: none;
+   color: inherit;
+   display: block;
  }
 
  .proj-title {
@@ -785,15 +812,8 @@
  }
 
  @keyframes blink {
-
-   0%,
-   100% {
-     opacity: 1
-   }
-
-   50% {
-     opacity: 0
-   }
+   0%, 100% { opacity: 1 }
+   50% { opacity: 0 }
  }
 
  .cursor {
@@ -911,171 +931,153 @@
  }
 
  @keyframes fadeIn {
-   from {
-     opacity: 0;
-     transform: translateY(5px);
-   }
-
-   to {
-     opacity: 1;
-     transform: none;
-   }
+   from { opacity: 0; transform: translateY(5px); }
+   to   { opacity: 1; transform: none; }
  }
 
  @media (min-width: 768px) {
-   .desktop {
-     padding: 20px 16px;
-   }
-
-   .icon-grid {
-     gap: 8px;
-   }
-
-   .icon {
-     width: 76px;
-     padding: 9px 7px;
-   }
-
-   .icon-img {
-     width: 48px;
-     height: 48px;
-     font-size: 26px;
-   }
-
-   .icon-label {
-     font-size: 10px;
-   }
-
-   .taskbar {
-     padding: 0 12px;
-     height: 50px;
-   }
-
-   .start-btn {
-     padding: 5px 12px;
-     font-size: 11px;
-   }
-
-   .tapp {
-     padding: 5px 10px;
-     font-size: 10px;
-   }
-
-   .tb-loc {
-     font-size: 9px;
-   }
-
-   .tb-clock {
-     font-size: 11px;
-   }
-
-   .window {
-     min-width: 350px;
-   }
-
-   .card-grid {
-     grid-template-columns: repeat(2, 1fr);
-   }
-
-   .contact-grid {
-     grid-template-columns: repeat(2, 1fr);
-   }
-
-   .skill-lbl {
-     width: 140px;
-   }
-
-   .about-name {
-     font-size: 20px;
-   }
-
-   .about-role {
-     font-size: 10px;
-   }
-
-   .bio-line {
-     font-size: 11px;
-   }
-
-   .term-out {
-     padding: 14px 18px;
-     font-size: 11px;
-   }
-
-   .term-input {
-     font-size: 11px;
-   }
-
-   .ascii-logo {
-     font-size: 6.5px;
-   }
+   .desktop { padding: 20px 16px; }
+   .icon-grid { gap: 8px; }
+   .icon { width: 76px; padding: 9px 7px; }
+   .icon-img { width: 48px; height: 48px; font-size: 26px; }
+   .icon-label { font-size: 10px; }
+   .taskbar { padding: 0 12px; height: 50px; }
+   .start-btn { padding: 5px 12px; font-size: 11px; }
+   .tapp { padding: 5px 10px; font-size: 10px; }
+   .tb-loc { font-size: 9px; }
+   .tb-clock { font-size: 11px; }
+   .window { min-width: 350px; }
+   .card-grid { grid-template-columns: repeat(2, 1fr); }
+   .contact-grid { grid-template-columns: repeat(2, 1fr); }
+   .skill-lbl { width: 140px; }
+   .about-name { font-size: 20px; }
+   .about-role { font-size: 10px; }
+   .bio-line { font-size: 11px; }
+   .term-out { padding: 14px 18px; font-size: 11px; }
+   .term-input { font-size: 11px; }
+   .ascii-logo { font-size: 6.5px; }
  }
 
  @media (min-width: 1024px) {
-   .desktop {
-     padding: 24px 18px;
-   }
-
-   .icon {
-     width: 78px;
-   }
-
-   .icon-img {
-     width: 50px;
-     height: 50px;
-     font-size: 28px;
-   }
-
-   .taskbar {
-     padding: 0 18px;
-   }
-
-   .window {
-     min-width: 400px;
-   }
-
-   .card-grid {
-     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-   }
-
-   .about-name {
-     font-size: 22px;
-   }
-
-   .term-out {
-     padding: 16px 22px;
-     font-size: 12px;
-   }
-
-   .ascii-logo {
-     font-size: 7.5px;
-   }
+   .desktop { padding: 24px 18px; }
+   .icon { width: 78px; }
+   .icon-img { width: 50px; height: 50px; font-size: 28px; }
+   .taskbar { padding: 0 18px; }
+   .window { min-width: 400px; }
+   .card-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+   .about-name { font-size: 22px; }
+   .term-out { padding: 16px 22px; font-size: 12px; }
+   .ascii-logo { font-size: 7.5px; }
  }
 
- /* Additional style for cursor pointer on project cards and links */
- .proj-card {
-   cursor: pointer;
-   transition: transform 0.2s ease, border-color 0.2s ease;
+ /* ── AMBIENT ANIMATIONS ── */
+
+ /* Horizontal scan line drifting top → bottom */
+ .scan-line {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 2px;
+   background: linear-gradient(90deg, transparent, rgba(0, 212, 170, 0.18), transparent);
+   animation: scanY 6s linear infinite;
+   pointer-events: none;
+   z-index: 5;
  }
 
- .proj-card:hover {
-   transform: translateY(-2px);
-   border-color: var(--cyan);
+ @keyframes scanY {
+   0%   { top: -2px; }
+   100% { top: calc(100vh + 2px); }
  }
 
- .proj-card a {
-   cursor: pointer;
-   text-decoration: none;
-   color: inherit;
-   display: inline-block;
-   width: 100%;
+ /* Vertical scan line drifting left → right */
+ .scan-h {
+   position: fixed;
+   top: 0;
+   bottom: 48px;
+   width: 2px;
+   left: 0;
+   background: linear-gradient(180deg, transparent, rgba(77, 159, 255, 0.1), transparent);
+   animation: scanX 9s linear infinite;
+   pointer-events: none;
+   z-index: 5;
  }
 
- .proj-card a:hover {
-   color: var(--cyan);
+ @keyframes scanX {
+   0%   { left: -2px; }
+   100% { left: calc(100vw + 2px); }
  }
 
- /* Ensure the entire card feels clickable */
- .proj-card h3 a {
-   display: block;
+ /* Corner bracket decorations pulsing */
+ .corner {
+   position: fixed;
+   width: 12px;
+   height: 12px;
+   z-index: 3;
+   animation: cornerPulse 4s ease-in-out infinite;
+   pointer-events: none;
+ }
+
+ .corner.tl { top: 8px;    left: 8px;  border-top: 1px solid var(--cyan); border-left:  1px solid var(--cyan); }
+ .corner.tr { top: 8px;    right: 8px; border-top: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
+ .corner.bl { bottom: 58px; left: 8px;  border-bottom: 1px solid var(--cyan); border-left:  1px solid var(--cyan); }
+ .corner.br { bottom: 58px; right: 8px; border-bottom: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
+
+ .corner.tr { animation-delay: 1s; }
+ .corner.bl { animation-delay: 2s; }
+ .corner.br { animation-delay: 3s; }
+
+ @keyframes cornerPulse {
+   0%, 100% { opacity: 0.2; }
+   50%       { opacity: 0.55; }
+ }
+
+ /* Floating particles */
+ .particle {
+   position: absolute;
+   width: 2px;
+   height: 2px;
+   border-radius: 50%;
+   background: var(--cyan);
+   opacity: 0;
+   animation: floatUp var(--dur, 8s) var(--del, 0s) linear infinite;
+ }
+
+ @keyframes floatUp {
+   0%   { opacity: 0;                transform: translateY(0) translateX(0); }
+   10%  { opacity: var(--op, 0.5); }
+   80%  { opacity: var(--op, 0.5); }
+   100% { opacity: 0;                transform: translateY(-80px) translateX(var(--dx, 10px)); }
+ }
+
+ /* Ambient glow pulsing around image area */
+ .img-glow {
+   position: fixed;
+   inset: 0;
+   background: radial-gradient(ellipse 60% 70% at 68% 50%, rgba(0, 212, 170, 0.04) 0%, transparent 70%);
+   animation: glowPulse 5s ease-in-out infinite;
+   pointer-events: none;
+   z-index: 1;
+ }
+
+ @keyframes glowPulse {
+   0%, 100% { opacity: 0.6; }
+   50%       { opacity: 1; }
+ }
+
+ /* Rare screen flicker */
+ .flicker {
+   position: fixed;
+   inset: 0;
+   pointer-events: none;
+   z-index: 6;
+   animation: flicker 12s ease infinite;
+   background: rgba(0, 212, 170, 0.03);
+ }
+
+ @keyframes flicker {
+   0%, 98%, 100% { opacity: 0; }
+   98.5%          { opacity: 1; }
+   99%            { opacity: 0; }
+   99.5%          { opacity: 0.6; }
  }
